@@ -49,7 +49,7 @@ dashboardNav.addEventListener('click', async (e) => {
     window.location.href = '/secure/dashboard.html';
   } else {
     sessionStorage.setItem('errorMsg', 'You must be logged in to access the dashboard');
-    window.location.href = '/public/signin.html'; 
+    window.location.href = '/signin.html'; 
   }
 });
 
@@ -58,9 +58,9 @@ signInNav.addEventListener('click', async (e) => {
   e.preventDefault();
   if (signInNav.textContent === 'Sign Out') {
     await signOut();
-    window.location.href = '/public/index.html';
+    window.location.href = '/index.html';
   } else {
-    window.location.href = '/public/signin.html';
+    window.location.href = '/signin.html';
   }
 });
 
@@ -75,11 +75,11 @@ courseCards.forEach(card => {
     if (await authFetch()) {
       //const courseId = e.currentTarget.dataset.courseId;
       //window.location.href = `/courses/${courseId}.html`; //have it take the user to the specific course later
-      window.location.href = '/public/courses.html'; //for now, just take them to the courses page
+      window.location.href = '/courses.html'; //for now, just take them to the courses page
     } 
     else {
       sessionStorage.setItem('errorMsg', 'You must be logged in to access course content');
-      window.location.href = '/public/signin.html';
+      window.location.href = '/signin.html';
     }
   }
   });
@@ -96,11 +96,11 @@ allFeaturedCourseCards.forEach(card => {
     if (await authFetch()) {
       //const courseId = e.currentTarget.dataset.courseId;
       //window.location.href = `/courses/${courseId}.html`; //have it take the user to the specific course later
-      window.location.href = '/public/courses.html'; //for now, just take them to the courses page
+      window.location.href = '/courses.html'; //for now, just take them to the courses page
     } 
     else {
       sessionStorage.setItem('errorMsg', 'You must be logged in to access course content');
-      window.location.href = '/public/signin.html';
+      window.location.href = '/signin.html';
     }
   }
   });
@@ -123,7 +123,7 @@ async function signOut(){
     });
     if (response.ok) {
         sessionStorage.setItem('successMsg',"Success! You have been logged out.")
-        window.location.href = '/public/index.html';
+        window.location.href = '/index.html';
     } else {
         console.error('Logout failed');
     }
