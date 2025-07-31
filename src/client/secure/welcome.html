@@ -1,0 +1,81 @@
+<!--PSURF 2025 / MedLearn LMS / src / client / secure-->
+<!-- welcome.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome | MedLearn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../public/styles.css"/>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="../public/index.html" class="logo">MedLearn</a>
+
+    <nav class="nav-links">
+      <a href="../public/index.html">Home</a>
+      <a href="../public/courses.html">Courses</a>
+      <a href="#" id="dashboard-nav">Dashboard</a>
+      <a href="../public/inquiries.html">Business Inquiries</a>
+      <a href="../public/signin.html" id="signin-nav">Sign In</a>
+      <button class="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Welcome card -->
+  <main class="welcome-page">
+    <form class="welcome-card" action="#" method="post">
+      <h1>Welcome!</h1>
+
+      <label for="company">Company Name</label>
+      <input
+        type="text"
+        id="company"
+        name="company"
+        placeholder="Company name"
+        required
+      />
+
+      <label for="password">Create Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Create password"
+        autocomplete="new-password"
+        required
+      />
+
+      <label for="confirm-password">Confirm Password</label>
+      <input
+        type="password"
+        id="confirm-password"
+        name="confirm-password"
+        placeholder="Confirm password"
+        autocomplete="new-password"
+        required
+      />
+
+      <button type="submit" class="btn-primary">Continue</button>
+    </form>
+  </main> 
+  <!-- tailwind alert -->
+  <div id="app-alert"
+     class="hidden fixed top-4 left-1/2 -translate-x-1/2
+            flex items-center gap-3 px-4 py-3 rounded shadow
+            bg-red-100 text-red-800">
+
+  <!-- icon holder -->
+    <span id="alert-icon" class="w-5 h-5 flex-shrink-0"></span>
+
+    <!-- message text -->
+    <span id="alert-msg">Placeholder</span>
+  </div>
+  <script type= "module"src="../public/js/main.js"></script>
+</body>
+</html>

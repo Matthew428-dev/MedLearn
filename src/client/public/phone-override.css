@@ -1,0 +1,11 @@
+/* simply overrides the backgroud for the country selectors*/
+/* can cause update problems if implemented into the css from the library itself*/
+:root {
+  --iti-dropdown-bg: #000;   /* dropdown panel */
+}
+.iti__country-list { background: var(--iti-dropdown-bg); }
+.iti__country       { color:#fff; }
+.iti__country:hover { background:#222; }
+/* make the input box as big as the other boxes */
+.iti { width: 100%; }
+.iti__container { width: 100%; }

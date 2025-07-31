@@ -1,0 +1,2 @@
+use medlearnLMS;
+describe inquiries;

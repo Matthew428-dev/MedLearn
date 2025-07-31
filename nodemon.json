@@ -1,0 +1,5 @@
+{
+  "watch": ["src/server"],
+  "ignore": ["src/client", ".parcel-cache"],
+  "ext": "js,json"
+}

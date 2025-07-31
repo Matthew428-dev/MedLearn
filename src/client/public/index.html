@@ -1,0 +1,79 @@
+<!--PSURF 2025 / MedLearn LMS / src / client / public-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedLearn | Sharpen Skills, Improve Outcomes</title>
+  <script type = "module" src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Navigation -->
+  <header class="navbar">
+    <a href="index.html" class="logo">MedLearn</a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="#" id = "dashboard-nav">Dashboard</a>
+      <a href="inquiries.html">Business Inquiries</a>
+      <a href="signin.html" id = "signin-nav">Sign In</a>
+
+      <!-- Hamburger for small screens -->
+      <button class="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Hero section -->
+  <main>
+    <section class="hero">
+      <h1>Sharpen Skills,<br />Improve Outcomes</h1>
+      <p>Access healthcare-focused courses for your workplace.</p>
+      <a href="#" class="btn-primary" id="get-started-btn">Get Started</a>
+    </section>
+
+    <!-- Featured courses -->
+    <section class="courses-section">
+      <h2>Featured Courses</h2>
+
+      <!-- Replace this grid with a carousel component later if desired -->
+      <div class="courses-grid">
+        <article class="course-card">
+          <div class="icon">🛡️</div>
+          <h3>HIPAA Training</h3>
+          <p>Protect patient privacy and data.</p>
+        </article>
+
+        <article class="course-card">
+          <div class="icon">💉</div>
+          <h3>Immunization Training</h3>
+          <p>Master vaccine administration practices.</p>
+        </article>
+
+        <article class="course-card">
+          <div class="icon">💊</div>
+          <h3>Medication Safety Basics</h3>
+          <p>Reduce errors in medication handling.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <div id="app-alert"
+     class="hidden fixed top-4 left-1/2 -translate-x-1/2
+            flex items-center gap-3 px-4 py-3 rounded shadow
+            bg-red-100 text-red-800">
+
+  <!-- icon holder -->
+    <span id="alert-icon" class="w-5 h-5 flex-shrink-0"></span>
+
+    <!-- message text -->
+    <span id="alert-msg">Placeholder</span>
+  </div>
+</body>
+  <script type="module" src="./js/index.js"></script>
+  <script type="module" src="./js/main.js"></script>
+</html>

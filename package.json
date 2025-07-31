@@ -1,0 +1,53 @@
+{
+  "name": "medlearn-lms",
+  "version": "1.0.0",
+  "description": "",
+  "sideEffects": [
+    "node_modules/intl-tel-input/build/js/utils.js"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev:server": "nodemon src/server/server.js",
+    "dev:client": "parcel src/client/public/*.html src/client/secure/*.html --port 1234",
+    "dev": "npm-run-all --parallel dev:*",
+    "build": "parcel build src/client/public/*.html src/client/secure/*.html",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cookie-session": "^2.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.1",
+    "intl-tel-input": "^25.3.1",
+    "libphonenumber-js": "^1.12.10",
+    "mysql2": "^3.11.3",
+    "nodemailer": "^7.0.5",
+    "path-to-regexp": "^8.1.0",
+    "smtp-client": "^0.4.0"
+  },
+  "devDependencies": {
+    "assert": "^2.1.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
+    "events": "^3.3.0",
+    "https-browserify": "^1.0.0",
+    "nodemon": "^3.1.7",
+    "npm-run-all": "^4.1.5",
+    "os-browserify": "^0.3.0",
+    "parcel": "^2.15.4",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.4",
+    "util": "^0.12.5",
+    "vm-browserify": "^1.1.2"
+  }
+}

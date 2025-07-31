@@ -1,0 +1,73 @@
+<!--PSURF 2025 / MedLearn LMS / src / client / public-->
+<!-- signin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | MedLearn</title>
+  <script type = "module" src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="logo">MedLearn</a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="#" id = "dashboard-nav">Dashboard</a>
+      <a href="inquiries.html">Business Inquiries</a>
+      <a href="signin.html" id = "signin-nav">Sign In</a>
+
+      <!-- Hamburger for small screens -->
+      <button class="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Sign-in card -->
+  <main class="auth-page">
+    <form id="login-form" class="auth-card" action="#" method="post">
+      <h1>MedLearn</h1>
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Email address"
+        autocomplete="username"
+        required
+      />
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        required
+      />
+
+      <button type="submit" class="btn-primary">Sign In</button>
+    </form>
+  </main>
+  
+  <!-- tailwind alert -->
+  <div id="app-alert"
+     class="hidden fixed top-4 left-1/2 -translate-x-1/2
+            flex items-center gap-3 px-4 py-3 rounded shadow
+            bg-red-100 text-red-800">
+
+  <!-- icon holder -->
+    <span id="alert-icon" class="w-5 h-5 flex-shrink-0"></span>
+
+    <!-- message text -->
+    <span id="alert-msg">Placeholder</span>
+  </div>
+  
+  <script type="module" src="./js/signin.js"></script>
+  <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>

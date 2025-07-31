@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | MedLearn</title>
+  <script type = "module" src="https://cdn.tailwindcss.com"></script>
+  <!-- point to the stylesheet emitted at dist/styles.css -->
+  <link rel="stylesheet" href="../public/styles.css" />
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+    rel="stylesheet"
+  />
+</head>
+<body class="dashboard-page">
+
+  <!--  NAV  -->
+  <header class="navbar">
+    <a href="../public/index.html" class="logo">MedLearn</a>
+
+    <nav class="nav-links">
+      <a href="../public/index.html">Home</a>
+      <a href="../public/courses.html">Courses</a>
+      <a href="#" id="dashboard-nav">Dashboard</a>
+      <a href="../public/inquiries.html">Business Inquiries</a>
+      <a href="../public/signin.html" id="signin-nav">Sign In</a>
+
+      <!-- Hamburger for small screens -->
+      <button class="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="dashboard-container">
+
+    <!--  COURSE BANNER  -->
+    <section class="course-banner">
+      <h2>
+        blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+        blah
+      </h2>
+      <a href="#" class="btn-primary">Resume</a>
+    </section>
+
+    <!--  STATUS CARDS  -->
+    <section class="status-cards">
+      <div class="status-card due-soon">
+        <span class="icon material-icons-outlined">menu_book</span>
+        <h3>42</h3>
+        <p>Due&nbsp;Soon</p>
+      </div>
+
+      <div class="status-card overdue">
+        <span class="icon material-icons-outlined">assignment</span>
+        <h3>08</h3>
+        <p>Overdue</p>
+      </div>
+
+      <div class="status-card completed">
+        <span class="icon material-icons-outlined">check_circle</span>
+        <h3>03</h3>
+        <p>Completed</p>
+      </div>
+    </section>
+
+    <!--  LOWER GRID  -->
+    <div class="lower-grid">
+
+      <!--  MY COURSES  -->
+      <section class="my-courses-block">
+        <h2>My Courses</h2>
+        <ul class="course-list">
+          <li class="course-item">
+            <div class="course-title">Web Development</div>
+            <div class="progress-bar"><span class="fill"></span></div>
+          </li>
+          <li class="course-item">
+            <div class="course-title">HTML Basics</div>
+            <div class="progress-bar"><span class="fill"></span></div>
+          </li>
+        </ul>
+      </section>
+
+      <!--  UPCOMING  -->
+      <section class="upcoming-block">
+        <h2>Upcoming</h2>
+        <ul class="upcoming-list">
+          <li>Practical theory&nbsp;1</li>
+          <li>Practical theory&nbsp;2</li>
+          <li>Practical theory&nbsp;3</li>
+        </ul>
+      </section>
+
+    </div>
+
+  </main>
+
+  <div
+    id="app-alert"
+    class="hidden fixed top-4 left-1/2 -translate-x-1/2
+           flex items-center gap-3 px-4 py-3 rounded shadow
+           bg-red-100 text-red-800"
+  >
+    <!-- icon holder -->
+    <span id="alert-icon" class="w-5 h-5 flex-shrink-0"></span>
+
+    <!-- message text -->
+    <span id="alert-msg">Placeholder</span>
+  </div>
+
+  <!-- your dashboard scripts -->
+  <script type="module" src="./js/dashboard.js"></script>
+  <script type="module" src="../public/js/main.js"></script>
+</body>
+</html>

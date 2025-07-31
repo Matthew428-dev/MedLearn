@@ -1,0 +1,141 @@
+<!-- src/client/public/inquiries.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Inquiry | MedLearn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/25.3.1/build/css/intlTelInput.css"/>
+  <link rel="stylesheet" href="phone-override.css"/>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+     <a href="index.html" class="logo">MedLearn</a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="#" id="dashboard-nav">Dashboard</a>
+      <a href="inquiries.html">Business Inquiries</a>
+      <a href="signin.html" id="signin-nav">Sign In</a>
+      <button class="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Inquiry card -->
+  <main class="inquiry-page">
+    <form class="inquiry-card" action="#" method="post">
+      <h1>Submit Request</h1>
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+        placeholder="johndoe@yourcompany.com"
+        pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+      />
+
+      <label for="firstName">First Name</label>
+      <input
+        type="text"
+        id="firstName"
+        name="firstName"
+        placeholder="John"
+        maxlength="100"
+        required
+      />
+
+      <label for="lastName">Last Name</label>
+      <input
+        type="text"
+        id="lastName"
+        name="lastName"
+        placeholder="Doe"
+        maxlength="100"
+        required
+      />
+
+      <!-- New Company Name field -->
+      <label for="companyName">Company Name</label>
+      <input
+        type="text"
+        id="companyName"
+        name="companyName"
+        placeholder="Your Pharmacy"
+        maxlength="200"
+        required
+      />
+
+      <label for="npi">NPI of the pharmacy</label>
+      <input
+        type="text"
+        id="npi"
+        name="npi"
+        placeholder="1234567890"
+        maxlength="10"
+        required
+      />
+
+      <label for="numOfUsers">Estimated Total Users</label>
+      <input
+        type="number"
+        id="numOfUsers"
+        name="numOfUsers"
+        placeholder="20"
+        min="1"
+        required
+      />
+
+      <label for="phoneNumber">Phone Number <small>(optional)</small></label>
+      <input
+        type="tel"
+        id="phoneNumber"
+        name="phoneNumber"
+        inputmode="numeric"
+        maxlength="15"
+        placeholder="(123)-456-7890"
+      />
+
+      <label for="inquiryType">Inquiry Type</label>
+      <select id="inquiryType" name="inquiryType" required>
+        <option value="" disabled>— Select one —</option>
+        <option selected>Demo Request</option>
+        <option>Pricing / Quote</option>
+        <option>Other</option>
+      </select>
+
+      <label for="msg">Message <small>(optional)</small></label>
+      <textarea id="msg" name="msg" rows="4" placeholder="Tell us more…"></textarea>
+
+      <button type="submit" class="btn-primary">Submit Inquiry</button>
+    </form>
+  </main>
+
+  <!-- tailwind alert -->
+  <div id="app-alert"
+       class="hidden fixed top-4 left-1/2 -translate-x-1/2
+              flex items-center gap-3 px-4 py-3 rounded shadow
+              bg-red-100 text-red-800">
+    <!-- icon holder -->
+    <span id="alert-icon" class="w-5 h-5 flex-shrink-0"></span>
+    <!-- message text -->
+    <span id="alert-msg">Placeholder</span>
+  </div>
+
+  <!-- intl-tel-input core (UMD bundle) -->
+  <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/25.3.1/build/js/intlTelInput.min.js"></script>
+  <!-- your application scripts -->
+  <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/inquiries.js"></script>
+
+</body>
+</html>

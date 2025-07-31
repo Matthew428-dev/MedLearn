@@ -1,0 +1,293 @@
+<!--PSURF 2025 / MedLearn LMS / src / client / public-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses | MedLearn</title>
+  <script type= "module" src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="logo">MedLearn</a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="#" id = "dashboard-nav">Dashboard</a>
+      <a href="inquiries.html">Business Inquiries</a>
+      <a href="signin.html" id = "signin-nav">Sign In</a>
+
+      <!-- Hamburger for small screens -->
+      <button class="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Course listing page -->
+  <main class="courses-page">
+    <h1 class="page-title">Courses</h1>
+
+    <!-- Search bar (typeable, ready for future JS) -->
+    <div class="course-search-bar">
+      <input type="text" placeholder="Search for a course..." />
+    </div>
+
+    <!-- Scrollable list of 18 course cards -->
+    <div class="course-list-container">
+      <div class="course-grid">
+
+        <!-- 1 HIPAA Training -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>HIPAA Training</h3>
+            <p>Understand U.S. privacy rules and how to handle patient data responsibly.</p>
+          </div>
+        </div>
+
+        <!-- 2 Immunization Training -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 5l-7 7"/><path d="M6 6l2 2"/><path d="M3 21l3-3"/><path d="M14 10l7 7"/><path d="M12 8l4 4"/><path d="M10 16l4 4"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Immunization Training</h3>
+            <p>Gain the skills and certifications to administer vaccines.</p>
+          </div>
+        </div>
+
+        <!-- 3 Medication Safety Basics -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Medication Safety Basics</h3>
+            <p>Learn storage safety, labeling, and how to reduce medication errors.</p>
+          </div>
+        </div>
+
+        <!-- 4 Patient Communication -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4 8.5 8.5 0 0 1-6.6 3.1 8.38 8.38 0 0 1-5.4-1.9L3 21l1.9-4.1A8.38 8.38 0 0 1 3.1 11.5 8.5 8.5 0 0 1 6.2 4.9 8.38 8.38 0 0 1 11.6 3a8.5 8.5 0 0 1 9.4 9.4z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Patient Communication</h3>
+            <p>Improve clarity, trust, and empathy when speaking with patients.</p>
+          </div>
+        </div>
+
+        <!-- 5 Pharmacy Law -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"/><path d="M20 22V2"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Pharmacy Law</h3>
+            <p>Explore key federal and state pharmacy regulations.</p>
+          </div>
+        </div>
+
+        <!-- 6 Sterile Compounding -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 3h15"/><path d="M8 3v5m8-5v5"/><path d="M6 8h12l-2 10H8L6 8z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Sterile Compounding</h3>
+            <p>Master aseptic techniques for IV preparation.</p>
+          </div>
+        </div>
+
+        <!-- 7 Medical Terminology -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Medical Terminology</h3>
+            <p>Learn the root words, prefixes, and suffixes used in healthcare.</p>
+          </div>
+        </div>
+
+        <!-- 8 Insurance & Billing -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Insurance & Billing</h3>
+            <p>Understand pharmacy claims, billing cycles, and reimbursement.</p>
+          </div>
+        </div>
+
+        <!-- 9 Controlled Substances -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Controlled Substances</h3>
+            <p>Learn DEA schedules, inventory rules, and safe handling.</p>
+          </div>
+        </div>
+
+        <!-- 10 Emergency Response -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Emergency Response</h3>
+            <p>Be prepared to respond quickly in urgent care situations.</p>
+          </div>
+        </div>
+
+        <!-- 11 Vaccine Storage & Handling -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a5 5 0 1 0 5 0z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Vaccine Storage & Handling</h3>
+            <p>Maintain cold chain standards and reduce vaccine loss.</p>
+          </div>
+        </div>
+
+        <!-- 12 OTC Medications -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2l1.5 2.5L9 2l1.5 2.5L12 2"/><path d="M6 6h12v14H6z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>OTC Medications</h3>
+            <p>Understand common OTC categories and product counseling.</p>
+          </div>
+        </div>
+
+        <!-- 13 Basic Pharmacology -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 7a4 4 0 0 1 0 8"/><path d="M8 7a4 4 0 0 0 0 8"/><path d="M12 4v16"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Basic Pharmacology</h3>
+            <p>Know how medications interact with the human body.</p>
+          </div>
+        </div>
+
+        <!-- 14 Inventory Management -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-2-2h-1l-2-3h-6L6 6H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Inventory Management</h3>
+            <p>Track medication stock and minimize waste.</p>
+          </div>
+        </div>
+
+        <!-- 15 Regulatory Compliance -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 17 10"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Regulatory Compliance</h3>
+            <p>Meet standards set by pharmacy boards and accrediting bodies.</p>
+          </div>
+        </div>
+
+        <!-- 16 Customer Service -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 15v2a4 4 0 0 0 4 4h1"/><path d="M20 15v2a4 4 0 0 1-4 4h-1"/><path d="M12 1a10 10 0 0 0-10 10v1a2 2 0 0 0 2 2h1v-5a7 7 0 0 1 14 0v5h1a2 2 0 0 0 2-2v-1A10 10 0 0 0 12 1z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Customer Service</h3>
+            <p>Boost patient satisfaction and resolve concerns effectively.</p>
+          </div>
+        </div>
+
+        <!-- 17 Infection Control -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13.5 2a5.4 5.4 0 0 1-3 0M7 7.8c1.5 0 3-2.4 3-3.6M17 7.8c-1.5 0-3-2.4-3-3.6M12 12c-4.8 0-6 3-6 6 0 0 1.8-3 6-3s6 3 6 3c0-3-1.2-6-6-6z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Infection Control</h3>
+            <p>Reduce the spread of pathogens in clinical settings.</p>
+          </div>
+        </div>
+
+        <!-- 18 Diabetes Education -->
+        <div class="course-card-lg">
+          <div class="course-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffd75f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.69L19.07 10.06a8 8 0 1 1-14.14 0z"/>
+            </svg>
+          </div>
+          <div class="course-info">
+            <h3>Diabetes Education</h3>
+            <p>Support patients in managing blood glucose and lifestyle changes.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+  <div id="app-alert"
+     class="hidden fixed top-4 left-1/2 -translate-x-1/2
+            flex items-center gap-3 px-4 py-3 rounded shadow
+            bg-red-100 text-red-800">
+
+  <!-- icon holder -->
+    <span id="alert-icon" class="w-5 h-5 flex-shrink-0"></span>
+
+    <!-- message text -->
+    <span id="alert-msg">Placeholder</span>
+  </div>
+</body>
+<script type ="module" src="./js/main.js"></script>
+</html>
