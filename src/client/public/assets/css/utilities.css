@@ -1,0 +1,13 @@
+/* Utility helper classes
+ *
+ * This file is intentionally left mostly empty because the current
+ * codebase does not make use of atomic utility classes. It can be
+ * expanded with helpers such as margin, padding or text alignment
+ * utilities if a future need arises. For example:
+ *
+ *   .u-mt-1 { margin-top: 0.25rem; }
+ *   .u-text-center { text-align: center; }
+ *
+ * Keeping this file separate allows for quick additions without
+ * polluting component or layout styles.
+ */

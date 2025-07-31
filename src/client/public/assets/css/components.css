@@ -1,0 +1,445 @@
+/* Component styles for reusable UI pieces such as cards, buttons and forms */
+
+/* Primary button styling */
+.btn-primary {
+  background: var(--accent); /* yellow background */
+  color: #000; /* dark text color for contrast */
+  padding: 0.85rem 2.5rem; /* inner spacing */
+  border-radius: 0.5rem; /* rounded corners */
+  font-weight: 600; /* bold font weight */
+  transition: transform 0.2s, box-shadow 0.2s; /* animate on hover */
+  display: inline-block; /* allow margin and width */
+  border: none; /* remove default border */
+  cursor: pointer; /* pointer on hover */
+}
+
+/* Hover state for primary buttons */
+.btn-primary:hover {
+  transform: translateY(-2px); /* slight lift on hover */
+  box-shadow: 0 8px 20px var(--shadow); /* drop shadow on hover */
+}
+
+/* Specific padding override for primary button in course banner */
+.course-banner .btn-primary {
+  padding: 0.5rem 1.75rem;
+}
+
+/* Generic course card used on home page */
+.course-card {
+  background: var(--card-bg); /* dark card background */
+  border: 1px solid var(--card-border); /* card border */
+  border-radius: 0.75rem; /* rounded corners */
+  padding: 2rem 1.5rem; /* spacing inside card */
+  text-align: center; /* center card content */
+  transition: transform 0.2s, box-shadow 0.2s; /* animation on hover */
+}
+
+/* Hover state for course cards */
+.course-card:hover {
+  transform: translateY(-4px); /* lift card */
+  box-shadow: 0 6px 18px var(--shadow); /* shadow effect */
+}
+
+/* Icon within course card */
+.course-card .icon {
+  font-size: 2rem; /* enlarge icons */
+  margin-bottom: 1rem; /* space below icon */
+}
+
+/* Card heading within course card */
+.course-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Card description text */
+.course-card p {
+  font-size: 0.95rem;
+  opacity: 0.85; /* slightly muted text */
+}
+
+/* Larger course card used on courses page */
+.course-card-lg {
+  display: flex; /* horizontal layout: icon and info */
+  gap: 1rem; /* space between icon and info */
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Hover state for large course cards */
+.course-card-lg:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+/* Large card icon container */
+.course-icon {
+  font-size: 2rem;
+  flex-shrink: 0; /* prevent icon from shrinking */
+}
+
+/* Course title inside large card */
+.course-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Course description text inside large card */
+.course-info p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* Shared black→yellow gradient used on banner and cards */
+.course-banner,
+.status-card,
+.my-courses-block,
+.upcoming-block {
+  background: linear-gradient(135deg,
+    #0b111e 0%,
+    #0b111e 45%,
+    #d4ae13 80%,
+    #facc15 100%);
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  backdrop-filter: blur(3px);
+}
+
+/* Status cards container on dashboard */
+.status-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(225px,235px));
+  gap: 6rem;
+  justify-content: center;
+}
+
+/* Shared status card styles */
+.status-card {
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover effect on status cards */
+.status-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+  background: linear-gradient(135deg,
+    #0b111e 0%,
+    #0b111e 55%,
+    #d4ae13 80%,
+    #facc15 100%);
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+}
+
+/* Icon container inside status cards */
+.status-card .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  font-size: 2.25rem;
+}
+
+/* Status card heading */
+.status-card h3 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Due soon variant colors */
+.status-card.due-soon .icon {
+  background: rgba(250,204,21,0.18);
+  color: #facc15;
+}
+
+/* Overdue variant colors */
+.status-card.overdue .icon {
+  background: rgba(248,113,113,0.18);
+  color: #f87171;
+}
+
+/* Completed variant colors */
+.status-card.completed .icon {
+  background: rgba(52,211,153,0.18);
+  color: #34d399;
+}
+
+/* Unordered list styles for courses and upcoming lists */
+.course-list,
+.upcoming-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Course title styling within list item */
+.course-item .course-title {
+  margin-bottom: 0.5rem;
+}
+
+/* Progress bar container */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--card-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* Fill element inside progress bar for completion percentage */
+.progress-bar .fill {
+  display: block;
+  width: 0%; /* dynamic width will be set with JS */
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+/* Card used on welcome page with gradient background */
+.welcome-card {
+  width: 420px; /* slightly wider than auth card */
+  padding: 2.5rem 2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(135deg,#0b111e 0%,#0b111e 45%,#d4ae13 80%,#facc15 100%);
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(3px); /* glass effect */
+}
+
+/* Heading in welcome card */
+.welcome-card h1 {
+  font-size: 3rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
+  color: var(--text-light);
+}
+
+/* Labels in welcome and inquiry cards */
+.welcome-card label,
+.inquiry-card label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+/* Container for the authentication card */
+.auth-card {
+  position: relative;
+  width: 350px; /* fixed width */
+  padding: 2.5rem 2rem;
+  border-radius: 1rem; /* rounded corners back */
+  border: 1px solid var(--card-border);
+  background: linear-gradient(135deg,
+    #0b111e 0%,
+    #0b111e 50%,
+    #d4ae13 80%,
+    #facc15 100%);
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+}
+
+/* Sign in card heading */
+.auth-card h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Inquiry form card container */
+.inquiry-card {
+  width: 460px;
+  flex-shrink: 0;
+  padding: 2.5rem 2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(135deg,#0b111e 0%,#0b111e 55%,#d4ae13 80%,#facc15 100%);
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
+  backdrop-filter: blur(3px);
+}
+
+/* Heading within inquiry card */
+.inquiry-card h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-light);
+  font-weight: bold;
+}
+
+/* Input fields and selects across cards */
+.auth-card input,
+.welcome-card input,
+.inquiry-card input,
+.inquiry-card select,
+.inquiry-card textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  color: var(--text-light);
+  font-size: 1rem;
+  margin-bottom: 1.25rem; /* unify margin bottom */
+}
+
+/* Placeholder text color across inputs */
+.auth-card input::placeholder,
+.welcome-card input::placeholder,
+.inquiry-card input::placeholder,
+.inquiry-card textarea::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+/* Dropdown styling for inquiry card */
+.inquiry-card select {
+  background-color: rgba(255,255,255,0.02);
+  color: var(--text-light);
+}
+
+/* Options in select dropdown */
+.inquiry-card select option {
+  background-color: #0b111e;
+  color: var(--text-light);
+}
+
+/* Disabled options in select dropdown */
+.inquiry-card select option[disabled] {
+  color: rgba(255,255,255,0.5);
+}
+
+/* Full‑width primary button inside auth, welcome and inquiry cards */
+.auth-card button.btn-primary,
+.welcome-card .btn-primary,
+.inquiry-card .btn-primary {
+  width: 100%;
+  margin-top: 0.25rem;
+  color: #000;
+}
+
+/* FAQ section wrapper */
+.faq-section {
+  color: var(--text-light);
+  margin: 0;
+}
+
+/* Heading inside FAQ section */
+.faq-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+/* Individual FAQ item */
+.faq-item {
+  margin-bottom: 1rem;
+}
+
+/* Question button for each FAQ item */
+.faq-question {
+  display: block;
+  width: 100%;
+  color: var(--text-light);
+  padding: 0.75rem 1rem;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  background: linear-gradient(135deg,
+    #0b111e 0%,
+    #0b111e 25%,
+    #d4ae13 65%,
+    #facc15 100%);
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  backdrop-filter: blur(3px);
+}
+
+/* Answer text hidden by default */
+.faq-answer {
+  display: none;
+  padding: 0.5rem 1rem;
+  background: #000;
+  color: var(--text-light);
+}
+
+/* Show answer when parent is open */
+.faq-item.open .faq-answer {
+  display: block;
+}
+
+/* About section text styling */
+.about-section {
+  color: var(--text-light);
+  text-align: left;
+  margin-top: 2.5rem;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+}
+
+/* Paragraph spacing inside about section */
+.about-section p {
+  margin-bottom: 0;
+}
+
+/* Heading styling in about section */
+.about-section h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* Contact section wrapper */
+.contact-section {
+  color: var(--text-light);
+  margin: 0;
+}
+
+/* Heading styling in contact section */
+.contact-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+  color: var(--accent);
+}
+
+/* Style for contact links (email/phone) */
+.contact-section a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Contact name text styling */
+.contact-name {
+  display: block;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Contact title text styling */
+.contact-title {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}

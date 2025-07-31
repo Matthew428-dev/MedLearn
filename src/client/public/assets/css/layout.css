@@ -1,0 +1,265 @@
+/* Layout styles controlling page structure and responsive grids */
+
+/* Navigation bar container */
+.navbar {
+  display: flex; /* align nav items horizontally */
+  justify-content: space-between; /* space between logo and links */
+  align-items: center; /* vertically center items */
+  padding: 2rem 4%; /* overall nav padding */
+}
+
+/* Logo text styling within navbar */
+.logo {
+  font-size: 2rem; /* large logo text */
+  font-weight: 600; /* semi‑bold weight */
+}
+
+/* Container for nav links */
+.nav-links {
+  display: flex; /* horizontal layout */
+  gap: 2rem; /* space between links */
+  align-items: center; /* vertically center links */
+}
+
+/* Mobile hamburger button container */
+.hamburger {
+  display: none; /* hidden by default; shown in media query */
+  flex-direction: column; /* three bars stacked */
+  gap: 0.3rem; /* space between bars */
+  background: none; /* remove default button styling */
+  border: none; /* remove border */
+  cursor: pointer; /* pointer cursor */
+}
+
+/* Individual bars within hamburger */
+.hamburger span {
+  display: block; /* each bar is a block */
+  width: 1.5rem; /* bar width */
+  height: 2px; /* bar height */
+  background: var(--text-light); /* bar color uses text color */
+}
+
+/* Hide nav links at mobile breakpoints and show hamburger */
+@media (max-width: 768px) {
+  .nav-links a {
+    display: none; /* hide links on small screens */
+  }
+  .hamburger {
+    display: flex; /* show hamburger when nav links hidden */
+  }
+}
+
+/* Hero section wrapper on home page */
+.hero {
+  text-align: center; /* center hero content */
+  padding: 6rem 4%; /* spacing around hero content */
+  max-width: 900px; /* limit hero width */
+  margin: 0 auto; /* center horizontally */
+}
+
+/* Hero title text */
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem); /* responsive font size */
+  font-weight: 700; /* bold weight */
+  line-height: 1.15; /* tighter line height */
+  margin-bottom: 1rem; /* spacing below heading */
+}
+
+/* Hero subtitle text */
+.hero p {
+  font-size: 1.125rem; /* moderate size for subtitle */
+  margin-bottom: 2.5rem; /* spacing below paragraph */
+  opacity: 0.9; /* slightly muted color */
+}
+
+/* Courses section wrapper on home and courses pages */
+.courses-section {
+  background: rgba(255,255,255,0.02); /* subtle translucent background */
+  padding: 4rem 4%; /* section padding */
+  position: relative; /* for pseudo element positioning */
+  z-index: 0; /* ensure content appears above pseudo */
+}
+
+/* Decorative bar at top of courses section */
+.courses-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(to right, var(--accent), rgba(255,215,95,0));
+  z-index: -1; /* place behind content */
+}
+
+/* Section heading within courses section */
+.courses-section h2 {
+  text-align: center; /* center heading text */
+  font-size: 2rem; /* heading size */
+  margin-bottom: 2.5rem; /* space below heading */
+}
+
+/* Grid container for course cards */
+.courses-grid {
+  display: grid; /* CSS grid layout */
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); /* responsive columns */
+  gap: 2rem; /* gap between cards */
+  max-width: 1100px; /* limit width */
+  margin: 0 auto; /* center grid */
+}
+
+/* Highlighted logo variant used on courses page */
+.logo.highlighted {
+  color: var(--text-light); /* keep logo white when highlighted */
+}
+
+/* Remove decorative bar on courses page */
+.courses-page .courses-section::before {
+  display: none; /* hide top gradient bar on courses page */
+}
+
+/* Wrapper for courses page content */
+.courses-page {
+  padding: 2rem 4%; /* padding around courses page content */
+  max-width: 1200px; /* limit width */
+  margin: 0 auto; /* center content */
+}
+
+/* Page title on courses page */
+.page-title {
+  text-align: center; /* center page title */
+  font-size: 2.5rem; /* large heading */
+  margin-bottom: 2rem; /* space below title */
+}
+
+/* Container around search bar on courses page */
+.course-search-bar {
+  display: flex; /* horizontal layout */
+  justify-content: center; /* center search bar */
+  margin-bottom: 2rem; /* spacing below search */
+}
+
+/* Search input styling */
+.course-search-bar input {
+  width: 100%; /* full width */
+  max-width: 500px; /* limit max width */
+  padding: 0.75rem 1.25rem; /* inner spacing */
+  font-size: 1rem; /* text size */
+  border-radius: 0.5rem; /* rounded corners */
+  border: none; /* remove border */
+  background: #1a202c; /* input background matches card */
+  color: var(--text-light); /* input text color */
+}
+
+/* Scrollable container for long course lists */
+.course-list-container {
+  overflow-y: auto; /* enable vertical scrolling */
+  padding-right: 4px; /* small padding to account for scrollbar */
+}
+
+/* Grid layout for large course cards on courses page */
+.course-grid {
+  display: grid; /* CSS grid */
+  grid-template-columns: repeat(auto-fit, minmax(350px,1fr)); /* responsive columns */
+  gap: 1.5rem; /* space between cards */
+}
+
+/* Dashboard page wrapper */
+.dashboard-page {
+  padding: 2rem 4%; /* consistent dashboard padding */
+}
+
+/* Container for dashboard content sections */
+.dashboard-container {
+  display: flex; /* flex layout */
+  flex-direction: column; /* stack vertical sections */
+  gap: 2.5rem; /* vertical spacing */
+}
+
+/* Banner at top of dashboard showing course/resume CTA */
+.course-banner {
+  display: flex; /* horizontal layout for banner */
+  justify-content: space-between; /* space between heading and button */
+  align-items: center; /* vertically center content */
+  max-width: 1000px; /* restrict banner width */
+  width: fit-content; /* shrink to fit content */
+  margin: 0 auto; /* center banner */
+  padding: 1.25rem 1.5rem; /* inner spacing */
+  gap: 1.25rem; /* space between heading and button */
+}
+
+/* Truncate long banner titles */
+.course-banner h2 {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Lower grid layout for dashboard (courses and upcoming) */
+.lower-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 2fr 1fr; /* two column layout */
+}
+
+/* Shared styles for content blocks on dashboard */
+.my-courses-block,
+.upcoming-block {
+  padding: 1.75rem 1.5rem;
+  align-self: stretch;
+}
+
+/* Headings within dashboard blocks */
+.my-courses-block h2,
+.upcoming-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Remove grid-area assignments for non-grid sections on inquiry page layout */
+.about-section { grid-area: unset; }
+.faq-section   { grid-area: unset; }
+.contact-section { grid-area: unset; }
+.inquiry-page  { grid-area: unset; }
+
+/* Layout container for inquiry page: two columns */
+.layout-container {
+  display: flex; /* horizontal layout */
+  gap: 2rem; /* space between left column and inquiry form */
+  padding: 0rem 2rem; /* horizontal padding */
+}
+
+/* Left column on inquiry page */
+.left-column {
+  display: flex; /* vertical stack of sections */
+  flex-direction: column;
+  gap: 7.5rem; /* vertical spacing between sections */
+}
+
+/* Welcome, auth and inquiry pages share centering rules */
+.welcome-page,
+.auth-page,
+.inquiry-page {
+  display: flex; /* center content */
+  align-items: center;
+  justify-content: center;
+  padding: 2rem; /* consistent padding */
+}
+
+/* Height for welcome and auth pages */
+.welcome-page { min-height: calc(100vh - 120px); }
+.auth-page   { min-height: calc(100vh - 120px); }
+.inquiry-page { min-height: 0; /* override min-height for inquiry page */ }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .lower-grid {
+    grid-template-columns: 1fr; /* single column layout on small screens */
+  }
+  .course-banner {
+    flex-direction: column; /* stack banner contents vertically */
+    gap: 1rem; /* reduce spacing for mobile */
+  }
+}

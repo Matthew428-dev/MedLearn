@@ -1,0 +1,17 @@
+/* Entrypoint stylesheet
+ *
+ * Rather than defining all of the site’s styles in a single file,
+ * we break them into modular partials. Parcel will inline these
+ * imports at build time into a single CSS bundle. The order of
+ * imports is important: settings define variables, base applies
+ * resets, layout structures the page, components handle reusable
+ * UI pieces, utilities provide atomic helpers, and vendor holds
+ * any third‑party overrides.
+ */
+
+@import './settings.css';
+@import './base.css';
+@import './layout.css';
+@import './components.css';
+@import './utilities.css';
+@import './vendor.css';

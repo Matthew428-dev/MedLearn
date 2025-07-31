@@ -1,0 +1,17 @@
+/* CSS Custom Properties - global theme colors and tokens */
+:root {
+  /* Darker, more‑black gradient background start color */
+  --bg-start: #062b81;
+  /* Darker gradient background end color */
+  --bg-end:   #050508;
+  /* Light text color used throughout the site */
+  --text-light: #ffffff;
+  /* Accent color used for highlights and buttons */
+  --accent:  #ffd75f;
+  /* Card background color */
+  --card-bg: #1a202c;
+  /* Card border color */
+  --card-border: #2d3748;
+  /* Drop shadow color */
+  --shadow: rgba(0,0,0,0.3);
+}
