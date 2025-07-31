@@ -1,4 +1,3 @@
-<!-- src/client/public/inquiries.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,15 +6,17 @@
   <title>Business Inquiry | MedLearn</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/25.3.1/build/css/intlTelInput.css"/>
-  <link rel="stylesheet" href="phone-override.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/25.3.1/build/css/intlTelInput.css"
+  />
+  <link rel="stylesheet" href="phone-override.css" />
 </head>
 <body>
 
   <!-- Navbar -->
   <header class="navbar">
-     <a href="index.html" class="logo">MedLearn</a>
-
+    <a href="index.html" class="logo">MedLearn</a>
     <nav class="nav-links">
       <a href="index.html">Home</a>
       <a href="courses.html">Courses</a>
@@ -28,86 +29,169 @@
     </nav>
   </header>
 
-  <!-- About Section -->
-  <section class="about-section">
-    <h2>About MedLearn</h2>
-    <p>MedLearn is an all-in-one pharmacy training platform. We help independent pharmacies upskill their teams with on-demand courses, track compliance, and improve patient outcomes—all in under 5 minutes of setup.</p>
-  </section>
+  <!-- Main layout -->
+  <div class="layout-container">
 
-  <!-- Inquiry card -->
-  <main class="inquiry-page">
-    <form class="inquiry-card" action="#" method="post">
-      <h1>Submit Request</h1>
+    <!-- Left column: About, FAQ, Contact -->
+    <div class="left-column">
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required placeholder="johndoe@yourcompany.com" pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
+      <section class="about-section">
+        <h2>Why Choose MedLearn?</h2>
+        <p>
+          MedLearn is a modern learning management system built specifically for independent pharmacies. We simplify training and compliance tracking, helping your pharmacy team stay ahead of industry standards. With user-friendly tools and a streamlined interface, MedLearn makes onboarding and ongoing education convenient, even for the busiest pharmacy. Our affordable, flexible pricing ensures independent pharmacies of all sizes can access high-quality training resources without breaking the bank. Spend less time on complicated software and more time improving patient care with MedLearn.
+        </p>
+      </section>
 
-      <label for="firstName">First Name</label>
-      <input type="text" id="firstName" name="firstName" placeholder="John" maxlength="100" required/>
+      <section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <button class="faq-question">How long does setup take?</button>
+          <div class="faq-answer">
+            Most customers are up and running in under 5 minutes—just sign up, invite your team, and start learning.
+          </div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <button class="faq-question">Is there a free trial?</button>
+          <div class="faq-answer">
+            Yes, we offer a 14-day free trial—no credit card required.
+          </div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <button class="faq-question">Can I customize course content?</button>
+          <div class="faq-answer">
+            Absolutely—you can brand your portal, adjust modules, and even upload your own training materials to match your pharmacy’s needs.
+          </div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+          <button class="faq-question">Which browsers are supported?</button>
+          <div class="faq-answer">
+            MedLearn works on the latest versions of Chrome, Firefox, Edge, and Safari—no additional plugins required.
+          </div>
+        </div>
+      </section>
 
-      <label for="lastName">Last Name</label>
-      <input type="text" id="lastName" name="lastName" placeholder="Doe" maxlength="100" required/>
+      <section class="contact-section">
+        <h2>Contact Us</h2>
+        <p>
+          If you prefer, you can reach us directly by phone or email. Our team is available Monday–Friday, 8 AM–6 PM Mountain Time to answer any questions.<br />
+          Send us an email at <a href="mailto:mfpetitt1@gmail.com">mfpetitt1@gmail.com</a> or call <a href="tel:+11234567890">(123) 456-7890</a>.<br />
+          <span class="contact-name">Matthew Petitt</span>
+          <span class="contact-title">Lead Sales Representative</span>
+        </p>
+      </section>
 
-      <label for="companyName">Company Name</label>
-      <input type="text" id="companyName" name="companyName" placeholder="Your Pharmacy" maxlength="200" required/>
-
-      <label for="npi">NPI of the pharmacy</label>
-      <input type="text" id="npi" name="npi" placeholder="1234567890" maxlength="10" required/>
-
-      <label for="numOfUsers">Estimated Total Users</label>
-      <input type="number" id="numOfUsers" name="numOfUsers" placeholder="20" min="1" required/>
-
-      <label for="phoneNumber">Phone Number <small>(optional)</small></label>
-      <input type="tel" id="phoneNumber" name="phoneNumber" inputmode="numeric" maxlength="15" placeholder="(123)-456-7890"/>
-
-      <label for="inquiryType">Inquiry Type</label>
-      <select id="inquiryType" name="inquiryType" required>
-        <option value="" disabled>— Select one —</option>
-        <option selected>Demo Request</option>
-        <option>Pricing / Quote</option>
-        <option>Other</option>
-      </select>
-
-      <label for="msg">Message <small>(optional)</small></label>
-      <textarea id="msg" name="msg" rows="4" placeholder="Tell us more…"></textarea>
-
-      <button type="submit" class="btn-primary">Submit Inquiry</button>
-    </form>
-  </main>
-
-  <!-- FAQ Section -->
-  <section class="faq-section">
-    <h2>Frequently Asked Questions</h2>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <button class="faq-question">How long does setup take?</button>
-      <div class="faq-answer">Most customers are up and running in under 5 minutes—just sign up, invite your team, and start learning.</div>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <button class="faq-question">Is there a free trial?</button>
-      <div class="faq-answer">Yes, we offer a 14-day free trial—no credit card required.</div>
+
+    <!-- Right column: Inquiry form -->
+    <div class="inquiry-page">
+      <form class="inquiry-card" action="#" method="post" id="inquiry-form">
+        <h1>Submit Request</h1>
+
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="johndoe@yourcompany.com"
+          pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+        />
+
+        <label for="firstName">First Name</label>
+        <input
+          type="text"
+          id="firstName"
+          name="firstName"
+          placeholder="John"
+          maxlength="100"
+          required
+        />
+
+        <label for="lastName">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          name="lastName"
+          placeholder="Doe"
+          maxlength="100"
+          required
+        />
+
+        <label for="companyName">Company Name</label>
+        <input
+          type="text"
+          id="companyName"
+          name="companyName"
+          placeholder="Your Pharmacy"
+          maxlength="200"
+          required
+        />
+
+        <label for="npi">NPI of the pharmacy</label>
+        <input
+          type="text"
+          id="npi"
+          name="npi"
+          placeholder="1234567890"
+          maxlength="10"
+          required
+        />
+
+        <label for="numOfUsers">Estimated Total Users</label>
+        <input
+          type="number"
+          id="numOfUsers"
+          name="numOfUsers"
+          placeholder="20"
+          min="1"
+          required
+        />
+
+        <label for="phoneNumber">Phone Number <small>(optional)</small></label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          name="phoneNumber"
+          inputmode="numeric"
+          maxlength="15"
+          placeholder="(123)-456-7890"
+        />
+
+        <label for="inquiryType">Inquiry Type</label>
+        <select id="inquiryType" name="inquiryType" required>
+          <option value="" disabled>— Select one —</option>
+          <option selected>Demo Request</option>
+          <option>Pricing / Quote</option>
+          <option>Other</option>
+        </select>
+
+        <label for="msg">Message <small>(optional)</small></label>
+        <textarea
+          id="msg"
+          name="msg"
+          rows="4"
+          placeholder="Tell us more…"
+        ></textarea>
+
+        <button type="submit" class="btn-primary">Submit Inquiry</button>
+      </form>
     </div>
-  </section>
 
-  <!-- Contact Section -->
-  <section class="contact-section">
-    <h2>Contact Us</h2>
-    <p>For support, email <a href="mailto:mfpetitt1@gmail.com">mfpetitt1@gmail.com</a> or call <a href="tel:+11234567890">(123) 456-7890</a>.<br/>Matthew Petitt</p>
-  </section>
+  </div>
 
-  <!-- tailwind alert -->
-  <div id="app-alert"
-       class="hidden fixed top-4 left-1/2 -translate-x-1/2
-              flex items-center gap-3 px-4 py-3 rounded shadow
-              bg-red-100 text-red-800">
+  <!-- Alert -->
+  <div
+    id="app-alert"
+    class="hidden fixed top-4 left-1/2 -translate-x-1/2
+           flex items-center gap-3 px-4 py-3 rounded shadow
+           bg-red-100 text-red-800"
+  >
     <span id="alert-icon" class="w-5 h-5 flex-shrink-0"></span>
     <span id="alert-msg">Placeholder</span>
   </div>
 
-  <!-- intl-tel-input core (UMD bundle) -->
-  <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/25.3.1/build/js/intlTelInput.min.js"></script>
-  <!-- your application scripts -->
-  <script type="module" src="./js/main.js"></script>
-  <script type="module" src="./js/inquiries.js"></script>
-
+  <!-- Scripts -->
+  <script type="module" src="/public/js/main.js"></script>
+  <script type="module" src="/public/js/inquiries.js"></script>
 </body>
 </html>

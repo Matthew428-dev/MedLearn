@@ -339,7 +339,8 @@ a {
 .course-banner,
 .status-card,
 .my-courses-block,
-.upcoming-block{
+.upcoming-block
+{
   background:linear-gradient(135deg,
             #0b111e 0%,
             #0b111e 45%,
@@ -530,22 +531,25 @@ a {
 
 /* ========= BUSINESS INQUIRY PAGE ========= */
 .inquiry-page{
-  min-height:calc(100vh - 120px);
+  min-height: 0;
   display:flex;
   align-items:center;
   justify-content:center;
   padding:2rem;
+  flex: 0 0 auto; 
 }
 
 .inquiry-card{
   width:460px;
+  flex-shrink: 0;
   padding:2.5rem 2rem;
   border:1px solid var(--card-border);
   border-radius:1rem;
-  background:linear-gradient(135deg,#0b111e 0%,#0b111e 45%,#d4ae13 80%,#facc15 100%);
+  background:linear-gradient(135deg,#0b111e 0%,#0b111e 55%,#d4ae13 80%,#facc15 100%);
   background-attachment:fixed;
   background-size:100vw 100vh;
   backdrop-filter:blur(3px);
+  
 }
 
 .inquiry-card h1{
@@ -597,66 +601,123 @@ a {
   margin-top:0.25rem;
 }
 
-/* About Section */
-.about-section {
-  max-width: 600px;
-  margin: 2rem auto;
-  text-align: center;
-  color: var(--text-light);
+.layout-container {
+  display: flex;
+  gap: 2rem; /* Horizontal space between left column and form */
+  padding: 0rem 2rem;
 }
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 7.5rem; /* Vertical space between About, FAQ, and Contact; adjust as needed */
+}
+
+/* Remove grid-specific styles from .about-section, .faq-section, .contact-section, .inquiry-page */
+.about-section { grid-area: unset; }
+.faq-section   { grid-area: unset; }
+.contact-section { grid-area: unset; }
+.inquiry-page  { grid-area: unset; }
+
+.about-section {
+  color: var(--text-light);
+  text-align: left;
+  margin-top: 2.5rem;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+}
+
+.about-section p {
+  margin-bottom: 0;
+}
+
 .about-section h2 {
   font-size: 1.75rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.inquiry-card h1 {
+  font-weight: bold;
+}
+
+.faq-section {
+  color: var(--text-light);
+  margin: 0;
+}
+
+.faq-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
   color: var(--accent);
 }
 
-/* FAQ Accordion */
-.faq-section {
-  max-width: 600px;
-  margin: 2rem auto;
-  color: var(--text-light);
-}
-.faq-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--accent);
-}
 .faq-item {
   margin-bottom: 1rem;
 }
+
 .faq-question {
   display: block;
   width: 100%;
-  background: rgba(255,255,255,0.05);
+  /*background: linear-gradient(90deg, #000 0%, #FFD700 100%);*/
   color: var(--text-light);
   padding: 0.75rem 1rem;
   border: none;
   text-align: left;
   cursor: pointer;
+  background:linear-gradient(135deg,
+            #0b111e 0%,
+            #0b111e 25%,
+            #d4ae13 65%,
+            #facc15 100%);
+  background-attachment:fixed;
+  background-size:100vw 100vh;
+  background-repeat:no-repeat;
+  border:1px solid var(--card-border);
+  border-radius:0.75rem;
+  backdrop-filter:blur(3px);
 }
+
 .faq-answer {
   display: none;
   padding: 0.5rem 1rem;
-  background: rgba(255,255,255,0.02);
+  background: #000;
   color: var(--text-light);
 }
+
 .faq-item.open .faq-answer {
   display: block;
 }
 
-/* Contact Section */
 .contact-section {
-  max-width: 600px;
-  margin: 2rem auto;
-  text-align: center;
   color: var(--text-light);
+  margin: 0;
 }
+
 .contact-section h2 {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   color: var(--accent);
 }
+
 .contact-section a {
   color: var(--accent);
   text-decoration: underline;
 }
+
+.contact-name {
+  display: block;
+  font-size: 1.5rem; /* same size as section title */
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.contact-title {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
