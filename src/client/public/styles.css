@@ -596,3 +596,67 @@ a {
   width:100%;
   margin-top:0.25rem;
 }
+
+/* About Section */
+.about-section {
+  max-width: 600px;
+  margin: 2rem auto;
+  text-align: center;
+  color: var(--text-light);
+}
+.about-section h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+/* FAQ Accordion */
+.faq-section {
+  max-width: 600px;
+  margin: 2rem auto;
+  color: var(--text-light);
+}
+.faq-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+.faq-item {
+  margin-bottom: 1rem;
+}
+.faq-question {
+  display: block;
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-light);
+  padding: 0.75rem 1rem;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+.faq-answer {
+  display: none;
+  padding: 0.5rem 1rem;
+  background: rgba(255,255,255,0.02);
+  color: var(--text-light);
+}
+.faq-item.open .faq-answer {
+  display: block;
+}
+
+/* Contact Section */
+.contact-section {
+  max-width: 600px;
+  margin: 2rem auto;
+  text-align: center;
+  color: var(--text-light);
+}
+.contact-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+.contact-section a {
+  color: var(--accent);
+  text-decoration: underline;
+}

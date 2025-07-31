@@ -36,13 +36,13 @@ lastNameInput.addEventListener("blur", e=>{
   }
 });
 
-const companyNameInput = document.getElementById("companyName");
+/*const companyNameInput = document.getElementById("companyName");
 companyNameInput.addEventListener("blur",e => {
   if(companyNameInput.value.length > 100){
     disableSubmitBtn();
     window.showAlert("error","Company name cannot be more than 100 characters");
   }
-})
+})*/
 
 
 // NPI formatting

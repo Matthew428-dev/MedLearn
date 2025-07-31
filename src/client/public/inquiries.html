@@ -28,82 +28,37 @@
     </nav>
   </header>
 
+  <!-- About Section -->
+  <section class="about-section">
+    <h2>About MedLearn</h2>
+    <p>MedLearn is an all-in-one pharmacy training platform. We help independent pharmacies upskill their teams with on-demand courses, track compliance, and improve patient outcomes—all in under 5 minutes of setup.</p>
+  </section>
+
   <!-- Inquiry card -->
   <main class="inquiry-page">
     <form class="inquiry-card" action="#" method="post">
       <h1>Submit Request</h1>
 
       <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        required
-        autocomplete="email"
-        placeholder="johndoe@yourcompany.com"
-        pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
-      />
+      <input type="email" id="email" name="email" required placeholder="johndoe@yourcompany.com" pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
 
       <label for="firstName">First Name</label>
-      <input
-        type="text"
-        id="firstName"
-        name="firstName"
-        placeholder="John"
-        maxlength="100"
-        required
-      />
+      <input type="text" id="firstName" name="firstName" placeholder="John" maxlength="100" required/>
 
       <label for="lastName">Last Name</label>
-      <input
-        type="text"
-        id="lastName"
-        name="lastName"
-        placeholder="Doe"
-        maxlength="100"
-        required
-      />
+      <input type="text" id="lastName" name="lastName" placeholder="Doe" maxlength="100" required/>
 
-      <!-- New Company Name field -->
       <label for="companyName">Company Name</label>
-      <input
-        type="text"
-        id="companyName"
-        name="companyName"
-        placeholder="Your Pharmacy"
-        maxlength="200"
-        required
-      />
+      <input type="text" id="companyName" name="companyName" placeholder="Your Pharmacy" maxlength="200" required/>
 
       <label for="npi">NPI of the pharmacy</label>
-      <input
-        type="text"
-        id="npi"
-        name="npi"
-        placeholder="1234567890"
-        maxlength="10"
-        required
-      />
+      <input type="text" id="npi" name="npi" placeholder="1234567890" maxlength="10" required/>
 
       <label for="numOfUsers">Estimated Total Users</label>
-      <input
-        type="number"
-        id="numOfUsers"
-        name="numOfUsers"
-        placeholder="20"
-        min="1"
-        required
-      />
+      <input type="number" id="numOfUsers" name="numOfUsers" placeholder="20" min="1" required/>
 
       <label for="phoneNumber">Phone Number <small>(optional)</small></label>
-      <input
-        type="tel"
-        id="phoneNumber"
-        name="phoneNumber"
-        inputmode="numeric"
-        maxlength="15"
-        placeholder="(123)-456-7890"
-      />
+      <input type="tel" id="phoneNumber" name="phoneNumber" inputmode="numeric" maxlength="15" placeholder="(123)-456-7890"/>
 
       <label for="inquiryType">Inquiry Type</label>
       <select id="inquiryType" name="inquiryType" required>
@@ -120,14 +75,31 @@
     </form>
   </main>
 
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <button class="faq-question">How long does setup take?</button>
+      <div class="faq-answer">Most customers are up and running in under 5 minutes—just sign up, invite your team, and start learning.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <button class="faq-question">Is there a free trial?</button>
+      <div class="faq-answer">Yes, we offer a 14-day free trial—no credit card required.</div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <h2>Contact Us</h2>
+    <p>For support, email <a href="mailto:mfpetitt1@gmail.com">mfpetitt1@gmail.com</a> or call <a href="tel:+11234567890">(123) 456-7890</a>.<br/>Matthew Petitt</p>
+  </section>
+
   <!-- tailwind alert -->
   <div id="app-alert"
        class="hidden fixed top-4 left-1/2 -translate-x-1/2
               flex items-center gap-3 px-4 py-3 rounded shadow
               bg-red-100 text-red-800">
-    <!-- icon holder -->
     <span id="alert-icon" class="w-5 h-5 flex-shrink-0"></span>
-    <!-- message text -->
     <span id="alert-msg">Placeholder</span>
   </div>
 
