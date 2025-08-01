@@ -16,7 +16,7 @@ router.post('/api/inquiries', checkSchema(createInquiryValidationSchema), async 
   const {email,firstName,lastName,companyName,npi,inquiryType,phoneNumber,numOfUsers,msg} = matchedData(req);
   try {
     const newInquiry = await createInquiry(email,firstName,lastName,companyName,npi,inquiryType,phoneNumber,numOfUsers,msg);
-    sendInquiryConfirmation(email,firstName);
+    await sendInquiryConfirmation(email, firstName)
     return res.status(201).json(newInquiry);
   } catch (error) {
     console.error('Error creating inquiry:', error);

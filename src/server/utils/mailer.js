@@ -1,31 +1,35 @@
-//PSURF 2025/Medlearn LMS / src / server / utils
-import nodemailer from 'nodemailer';
-const transport = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: +process.env.SMTP_PORT,
-  secure: true,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
-});
+import dotenv from 'dotenv'
+import formData from 'form-data'
+import Mailgun from 'mailgun.js'
 
-export async function sendInquiryConfirmation(email, firstName) {
-  const info = await transport.sendMail({
-    from: process.env.EMAIL_FROM,
-    to: email,
-    subject: "Confirmation: Inquiry Received",
-    text: `Hello ${firstName},
+dotenv.config()
 
-Thank you for your interest in MedLearn. Our team is reviewing the details you submitted about ${companyName} and will follow up within one business day with next steps. If you have any additional information in the meantime, just let us know.
+const mg = new Mailgun(formData).client({
+  username: 'api',
+  key: process.env.MAILGUN_API_KEY,
+  ...(process.env.MAILGUN_API_BASE_URL && { url: process.env.MAILGUN_API_BASE_URL })
+})
+
+async function sendEmail({ to, subject, html, text }) {
+  return mg.messages.create(process.env.MAILGUN_DOMAIN, {
+    from: process.env.EMAIL_FROM || `MedLearn <no-reply@${process.env.MAILGUN_DOMAIN}>`,
+    to,
+    subject,
+    html,
+    text
+  })
+}
+
+export function sendInquiryConfirmation(to, firstName) {
+  const subject = 'Confirmation: Inquiry Received'
+  const text = `Hello ${firstName},
+
+Thank you for your interest in MedLearn. Our team is reviewing the information you submitted and will follow up within 1-2 business days with the next steps. If you have any additional information in the meantime, just let us know.
 
 Sincerely,
-The MedLearn Team`,
-    html: `
-      <div style="font-family:Arial,sans-serif;line-height:1.5;color:#333;">
-        <h2 style="color:#007ACC;margin-bottom:0.5em;">Thank you for your interest in MedLearn</h2>
-        <p>Hi ${firstName},</p>
-        <p>Our team is reviewing the details you submitted about <strong>${companyName}</strong> and will follow up within one business day with next steps. If you have any additional information in the meantime, feel free to reply to this email.</p>
-        <p style="margin-top:1.5em;">Sincerely,<br>The MedLearn Team</p>
-      </div>
-    `
-  });
-  return info.messageId;
+The MedLearn Team`
+  const html = `<div style="font-family:Arial,sans-serif;line-height:1.5;color:#333;">${text.replace(/\n/g, '<br />')}</div>`
+  return sendEmail({ to, subject, html, text })
 }
+
+export default sendEmail

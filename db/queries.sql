@@ -1,2 +1,2 @@
 use medlearnLMS;
-describe inquiries;
+select * from inquiries;
