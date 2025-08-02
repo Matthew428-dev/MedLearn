@@ -54,6 +54,7 @@ export const createInquiryValidationSchema = {
     email: {
         in: ['body'],
         isEmail: true,
+        bail: true,
         normalizeEmail: true,
         custom: {
             options: async value => {
@@ -95,12 +96,24 @@ export const createInquiryValidationSchema = {
     },
     npi: {
         in: ['body'],
-        isString: true,
-        isLength: {
-            options: { min: 10, max: 10 }
+        isLength: { options: { min: 10, max: 10 } },
+        matches: { options: [/^[0-9]+$/] },          // basic format
+        bail: true,
+        custom: {
+            options: async npi => {
+            // call the public NPI Registry API
+            const res = await fetch(
+                `https://npiregistry.cms.hhs.gov/api/?version=2.1&number=${npi}`
+            );
+            if (!res.ok) throw new Error('NPI lookup failed');
+
+            const data = await res.json();
+            const exists = Array.isArray(data.results) && data.results.length > 0;
+            if (!exists) throw new Error('NPI does not exist');
+
+            return true;
+            }
         },
-        matches: { options: [/^\d{10}$/] },
-        //custom: { options: isValidNpi },    
         errorMessage: 'Invalid NPI'
     },
     phoneNumber: {
@@ -109,8 +122,9 @@ export const createInquiryValidationSchema = {
         customSanitizer: {
             options: v => String(v).replace(/\D/g, '')   
         }, // keep digits only
-        isLength: { options: { min: 10, max: 10 } },             // exactly 10 digits
-        matches:  { options: [/^\d{10}$/] },                     // digits-only check
+        isLength: { options: { min: 10, max: 10 } }, //only 10 digits
+        bail: true,             
+        matches:  { options: [/^\d{10}$/] }, // digits-only check
         errorMessage: 'US phone number must be 10 digits'
     },
     inquiryType: {
@@ -139,18 +153,30 @@ export const createInquiryValidationSchema = {
     // reCAPTCHA validation
     recaptcha: {
     in: ['body'],
+    notEmpty: true,
+    bail: true,
     custom: {
-      options: async token => {
-        const secret = process.env.RECAPTCHA_SECRET;
-        const res = await fetch(
-          `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,
-          { method: 'POST' }
-        );
-        const { success } = await res.json();
-        if (!success) throw new Error('reCAPTCHA failed');
-        return true;
-      }
+        options: async token => {
+        try {
+            const secret = process.env.RECAPTCHA_SECRET;
+            const res = await fetch(
+            'https://www.google.com/recaptcha/api/siteverify',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ secret, response: token })
+            }
+            );
+            const { success } = await res.json();
+
+            if (!success) throw new Error('reCAPTCHA failed');
+            return true;               // success === true → pass
+        } catch (err) {
+            // network error or Google down
+            throw new Error('reCAPTCHA verification error');
+        }
+        }
     },
-    errorMessage: 'Invalid reCAPTCHA'
+    errorMessage: 'Invalid reCAPTCHA'   // shown only if you *return false*
   }
 }

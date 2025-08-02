@@ -227,15 +227,12 @@ if (form) {
     });
 
     if (res.ok) {
-      //form.reset();
+      form.reset();
       showAlert("success", "Success! Inquiry received. Please allow 24-48 hours for a response.",8000);
     } else {
       disableSubmitBtn();
       const { errors } = await res.json();
-      const messages = errors.map(e => e.msg);
-      for(let i = 0; i < messages.length;i++){
-        window.showAlert('error',messages[i]);
-      }
+      errors.forEach(err => window.showAlert('error', err.msg));
     }
   });
 }
