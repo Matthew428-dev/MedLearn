@@ -3,82 +3,136 @@ import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
 
 /* <========= EVENTS ==========> */
+let captchaOK = false; // default false, until the user passes the reCAPTCHA
+
 document.addEventListener('DOMContentLoaded',()=>{
-  disableSubmitBtn();
+  checkSubmitBtn(); // initial check to enable/disable submit button
 });
 
 const form = document.querySelector(".inquiry-card");
 form.addEventListener('input', () => {
-  //TODO finish this, not quite working. Just trying to disable the btn by default
-  const {email,firstName,lastName,companyName,npi,numOfUsers,inquiryType} = form.elements;
-  const allFilled = email.value.trim() && firstName.value.trim() && lastName.value.trim() && companyName.value.trim() && npi.value.trim() && numOfUsers.value.trim() && inquiryType.value.trim();
-  if(!allFilled){
-    disableSubmitBtn();
-  }
-  else{
-    enableSubmitBtn();
-  }
+  checkSubmitBtn();
 });
 
+// FIRST NAME FORMATTING
+let firstNameAttempted = false;
 const firstNameInput = document.getElementById("firstName");
-firstNameInput.addEventListener("blur", e => {
-  if(firstNameInput.value.length > 100){
-    disableSubmitBtn();
-    window.showAlert("error","First name cannot be more than 100 characters");
-  }
-});
 
+if(firstNameInput){
+  firstNameInput.addEventListener("input", () => {
+    firstNameAttempted = true;
+  });
+
+  firstNameInput.addEventListener("blur", () => {
+
+    if(firstNameInput.value.length > 100 && firstNameAttempted){
+      disableSubmitBtn();
+      window.showAlert("error","First name cannot be more than 100 characters");
+    }
+  });
+}
+
+// LAST NAME FORMATTING
+let lastNameAttempted = false;
 const lastNameInput = document.getElementById("lastName");
-lastNameInput.addEventListener("blur", e=>{
-  if(lastNameInput.value.length > 100){
-    disableSubmitBtn();
-    window.showAlert("error","Last name cannot be more than 100 characters");
-  }
-});
 
-/*const companyNameInput = document.getElementById("companyName");
-companyNameInput.addEventListener("blur",e => {
-  if(companyNameInput.value.length > 100){
-    disableSubmitBtn();
-    window.showAlert("error","Company name cannot be more than 100 characters");
-  }
-})*/
+if(lastNameInput){
+  lastNameInput.addEventListener("input", () => {
+    lastNameAttempted = true;
+  });
 
+  lastNameInput.addEventListener("blur", () => {
+    if(lastNameInput.value.length > 100 && lastNameAttempted){
+      disableSubmitBtn();
+      window.showAlert("error","Last name cannot be more than 100 characters");
+    }
+  });
+}
 
-// NPI formatting
+//COMPANY NAME FORMATTING
+let companyNameAttempted = false;
+const companyNameInput = document.getElementById("companyName");
+
+if(companyNameInput){
+  companyNameInput.addEventListener("input", () => {
+    companyNameAttempted = true;
+  });
+
+  companyNameInput.addEventListener("blur", () => {
+    if(companyNameInput.value.length > 100 && companyNameAttempted){
+      disableSubmitBtn();
+      window.showAlert("error","Company name cannot be more than 100 characters");
+    }
+  });
+}
+
+// NPI FORMATTING
+let npiAttempted = false;
 const npiInput = document.getElementById('npi');
+
 if (npiInput) {
 
   //only allow digits, no longer than 10 digits, as the user types
   npiInput.addEventListener('input', e => {
     const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
     e.target.value = digits;
+    if(e.target.value.length > 3){
+      npiAttempted = true;
+    }
   });
 
   //only validate npi on blur
   npiInput.addEventListener('blur',e=>{
     //validateNPI does the whole npi check and shows the proper alert
-    validateNPI(npiInput.value);
+    if(npiAttempted){
+      validateNPI(npiInput.value);
+    }
   })
 
 }
 
 
-//num of users formatting
+//NUM OF USERS FORMATTING
+let numOfUsersAttempted = false;
 const numOfUsersInput = document.getElementById('numOfUsers');
+
 if(numOfUsersInput){
   numOfUsersInput.addEventListener('input',e=>{
     e.target.value = e.target.value.replace(/\D/g,'');
+    if(e.target.value.length > 0){
+      numOfUsersAttempted = true;
+    }
+  });
+
+  numOfUsersInput.addEventListener('blur',e=>{
+    if(numOfUsersAttempted){
+      const num = parseInt(e.target.value, 10);
+      if(isNaN(num)){
+        window.showAlert('error','Number of users must be a valid number');
+        disableSubmitBtn();
+      }
+      else if(num < 5){
+        window.showAlert("warn","Are you sure there is less than 5 users? Be sure to include managers.");
+      }
+      else if(num > 150){
+        window.showAlert("warn","Are you sure there are more than 150 users?");
+      }
+    }
   });
 }
 
-//phone formatting
+//PHONE FORMATTING
+let phoneNumberAttempted = false;
 const phoneInput = document.getElementById('phoneNumber');
+
 if(phoneInput){
 
   phoneInput.addEventListener('input', e => {
     //don't allow the user to type non-digits
     e.target.value = e.target.value.replace(/\D/g, '');
+    if(e.target.value.length > 2){
+      phoneNumberAttempted = true;
+    }
   });
 
   //phone number formatting and pattern validity
@@ -121,7 +175,9 @@ if(phoneInput){
         phoneInput.value = formatted;
       } else {
         disableSubmitBtn();
-        window.showAlert("error","Invalid " + country.name + " phone number");
+        if(phoneNumberAttempted){
+          window.showAlert("error","Invalid " + country.name + " phone number");
+        }
       }
     });
   })();
@@ -144,6 +200,7 @@ if (form) {
     const numOfUsers = parseInt(form.numOfUsers.value.trim(), 10);
     const msg = form.msg.value.trim();
     const rawPhone = phoneInput.value.replace(/\D/g, "");
+    const recaptcha = grecaptcha.getResponse();
 
     // build payload
     const payload = {
@@ -155,7 +212,9 @@ if (form) {
       inquiryType,
       numOfUsers,
       msg,
+      recaptcha
     };
+
     if (rawPhone) {
       payload.phoneNumber = rawPhone; //only include the phone number if the user entered one
     }
@@ -223,7 +282,7 @@ function disableSubmitBtn(){
   submitBtn.style.backgroundColor = '#4b5563';
 }
 
-function enableSubmitBtn(){
+function enableSubmitBtn() {
   const submitBtn = document.querySelector(".btn-primary");
   if(!submitBtn){
     return;
@@ -231,5 +290,31 @@ function enableSubmitBtn(){
   submitBtn.disabled = false;
   submitBtn.classList.remove('opacity-50','cursor-not-allowed');
   submitBtn.style.backgroundColor = '';
+
+}
+
+function captchaVerified () {
+  captchaOK = true;
+  checkSubmitBtn();
+}
+function captchaExpired () {
+  captchaOK = false;
+  checkSubmitBtn();
+}
+
+/* ------- export them to the global object ------- */
+window.captchaVerified = captchaVerified;
+window.captchaExpired  = captchaExpired;
+
+function checkSubmitBtn(){
+  const {email,firstName,lastName,companyName,npi,numOfUsers,inquiryType} = form.elements;
+  const allFilled = email.value.trim() && firstName.value.trim() && lastName.value.trim() && companyName.value.trim() && npi.value.trim() && numOfUsers.value.trim() && inquiryType.value.trim();
+  
+  if(allFilled && captchaOK){
+    enableSubmitBtn();
+  }
+  else{
+    disableSubmitBtn();
+  }
 
 }

@@ -1,0 +1,16 @@
+/* === reCAPTCHA overrides (inquiries form) ===================== */
+.captcha-wrapper {
+  width: 100%;          /* match the input elements */
+  margin-bottom: 1rem;
+}
+
+.captcha-wrapper .g-recaptcha {
+  transform: scale(1.15);      /* 1.15 × 304 px ≈ 350 px width—adjust as needed */
+  transform-origin: 0 0;
+}
+
+/* keep the iframe from showing scroll-bars after scaling */
+.captcha-wrapper iframe {
+  width: 100% !important;
+  height: 90px !important;     /* 78 px × 1.15 */
+}

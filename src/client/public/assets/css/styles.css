@@ -15,3 +15,4 @@
 @import './components.css';
 @import './utilities.css';
 @import './vendor.css';
+@import './captcha-override.css';

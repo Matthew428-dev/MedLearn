@@ -50,13 +50,15 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// serve front-end (both public and secure) from dist on single port
-app.use(express.static(path.join(process.cwd(), 'dist')));
+// serve front-end from dist on a single port
+// secure routes are protected and served from /secure
 app.use(
   '/secure',
   requireAuth,
   express.static(path.join(process.cwd(), 'dist', 'secure'))
 );
+
+app.use(express.static(path.join(process.cwd(), 'dist')));
 
 // start server
 app.listen(PORT, () => {

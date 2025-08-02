@@ -91,7 +91,7 @@ export const createInquiryValidationSchema = {
             options: { min: 1, max: 100}
         },
         trim: true,
-        errorMessage: 'Company name cannot be more than 10 characters long'
+        errorMessage: 'Company name cannot be more than 100 characters long'
     },
     npi: {
         in: ['body'],
@@ -135,5 +135,22 @@ export const createInquiryValidationSchema = {
         trim: true,
         escape: true,
         errorMessage: 'Message cannot be more than 1000 characters long'
-    }
+    },
+    // reCAPTCHA validation
+    recaptcha: {
+    in: ['body'],
+    custom: {
+      options: async token => {
+        const secret = process.env.RECAPTCHA_SECRET;
+        const res = await fetch(
+          `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,
+          { method: 'POST' }
+        );
+        const { success } = await res.json();
+        if (!success) throw new Error('reCAPTCHA failed');
+        return true;
+      }
+    },
+    errorMessage: 'Invalid reCAPTCHA'
+  }
 }

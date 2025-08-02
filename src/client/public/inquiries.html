@@ -173,6 +173,11 @@
           placeholder="Tell us more…"
         ></textarea>
 
+        <!-- Google's reCAPTCHA v2 -->
+        <div class="captcha-wrapper">
+          <div class="g-recaptcha" data-sitekey="6LdiWpcrAAAAAIBKzQVl9uSip8lo20Sn1_o-1oXy" data-callback="captchaVerified" data-expired-callback="captchaExpired" data-theme="dark"></div>
+        </div>
+
         <button type="submit" class="btn-primary">Submit Inquiry</button>
       </form>
     </div>
@@ -193,5 +198,6 @@
   <!-- Scripts -->
   <script type="module" src="./assets/js/lib/main.js"></script>
   <script type="module" src="./assets/js/public/inquiries.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
