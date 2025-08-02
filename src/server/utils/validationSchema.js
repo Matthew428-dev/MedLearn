@@ -53,8 +53,11 @@ export const createCompanyValidationSchema = {
 export const createInquiryValidationSchema = {
     email: {
         in: ['body'],
-        isEmail: true,
-        bail: true,
+        isEmail:{
+            bail: true,
+            errorMessage: "Invalid email format"
+        },
+        // normalizeEmail is used to convert email to a standard format
         normalizeEmail: true,
         custom: {
             options: async value => {
@@ -64,8 +67,7 @@ export const createInquiryValidationSchema = {
                 }
                 return true;
             }
-        },
-        errorMessage: "Invalid email format"
+        }
     },
     firstName: {
         in: ['body'],
@@ -96,9 +98,14 @@ export const createInquiryValidationSchema = {
     },
     npi: {
         in: ['body'],
-        isLength: { options: { min: 10, max: 10 } },
-        matches: { options: [/^[0-9]+$/] },          // basic format
-        bail: true,
+        isLength: { 
+            options: { min: 10, max: 10 },
+            bail: true
+        },
+        matches: { 
+            options: [/^[0-9]+$/],
+            bail: true 
+        }, 
         custom: {
             options: async npi => {
             // call the public NPI Registry API
@@ -122,9 +129,14 @@ export const createInquiryValidationSchema = {
         customSanitizer: {
             options: v => String(v).replace(/\D/g, '')   
         }, // keep digits only
-        isLength: { options: { min: 10, max: 10 } }, //only 10 digits
-        bail: true,             
-        matches:  { options: [/^\d{10}$/] }, // digits-only check
+        isLength: { 
+            options: { min: 10, max: 10 }, //has to be 10 digits
+            bail: true
+        }, 
+        matches:  { 
+            options: [/^\d{10}$/],
+            bail: true
+        }, // digits-only check
         errorMessage: 'US phone number must be 10 digits'
     },
     inquiryType: {
@@ -152,11 +164,12 @@ export const createInquiryValidationSchema = {
     },
     // reCAPTCHA validation
     recaptcha: {
-    in: ['body'],
-    notEmpty: true,
-    bail: true,
-    custom: {
-        options: async token => {
+        in: ['body'],
+        notEmpty: {
+            bail: true,
+        },
+        custom: {
+            options: async token => {
         try {
             const secret = process.env.RECAPTCHA_SECRET;
             const res = await fetch(
