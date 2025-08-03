@@ -1,18 +1,23 @@
-/* Entrypoint stylesheet
- *
- * Rather than defining all of the site’s styles in a single file,
- * we break them into modular partials. Parcel will inline these
- * imports at build time into a single CSS bundle. The order of
- * imports is important: settings define variables, base applies
- * resets, layout structures the page, components handle reusable
- * UI pieces, utilities provide atomic helpers, and vendor holds
- * any third‑party overrides.
- */
+/* Entrypoint stylesheet*/
+/* imports all the other stylesheets in the project */
 
-@import './settings.css';
-@import './base.css';
-@import './layout.css';
-@import './components.css';
-@import './utilities.css';
-@import './vendor.css';
-@import './captcha-override.css';
+
+/*tailwind imports, has to be first*/
+@tailwind base;
+@layer base {
+  @import "./settings.css";
+  @import "./base.css";
+}
+
+@tailwind components;
+@layer components {
+  @import "./layout.css";
+  @import "./components.css";
+}
+
+@tailwind utilities;
+@layer utilities {
+  @import "./utilities.css";
+  @import "./vendor.css";
+  @import "./captcha-override.css";
+}
