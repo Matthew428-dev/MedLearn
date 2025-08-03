@@ -1,15 +1,15 @@
-<#  codex-push.ps1
-    Automates git add / commit / push for Codex
-    Usage:
-        powershell -ExecutionPolicy Bypass -File codex-push.ps1             # pushes to main
-        powershell -ExecutionPolicy Bypass -File codex-push.ps1 dev-branch  # pushes to dev-branch
+<# codex-push.ps1  –  commit & push all changes
+   Usage:
+       powershell -ExecutionPolicy Bypass -File codex-push.ps1 [branch]
+       (branch defaults to 'main')
 #>
 
 param(
   [string]$Branch = "main"
 )
 
-Write-Host "`n=== Codex Push Script ==="
+Write-Host ""
+Write-Host "=== Codex Push Script ==="
 
 # ----- load .env -------------------------------------------------------------
 if (Test-Path ".env") {
@@ -19,24 +19,24 @@ if (Test-Path ".env") {
       [Environment]::SetEnvironmentVariable($Matches[1], $Matches[2], "Process")
     }
   }
-  Write-Host ("GH_TOKEN present? {0}" -f ($env:GH_TOKEN -ne $null))
+  if ($env:GH_TOKEN) { Write-Host "GH_TOKEN found" } else { Write-Warning "GH_TOKEN missing" }
 } else {
   Write-Warning ".env not found – GH_TOKEN may be missing"
 }
 
 # ----- set commit identity ---------------------------------------------------
-git config user.name  "Codex"                                | Out-Null
+git config user.name  "Codex"  | Out-Null
 git config user.email "Matthew428-dev@users.noreply.github.com" | Out-Null
 
 # ----- stage everything ------------------------------------------------------
 Write-Host "Staging all changes ..."
 git add .
 
-# ----- commit if something is staged ----------------------------------------
-Write-Host "Creating commit (if needed) ..."
+# ----- commit if needed ------------------------------------------------------
 if (-not (git diff --cached --quiet)) {
-  $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-  git commit -m "feat: automated Codex update $timestamp"
+  $stamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+  git commit -m "feat: automated Codex update $stamp"
+  Write-Host "Commit created"
 } else {
   Write-Host "Nothing to commit"
 }
@@ -44,5 +44,5 @@ if (-not (git diff --cached --quiet)) {
 # ----- push ------------------------------------------------------------------
 Write-Host "Pushing to $Branch ..."
 git push origin $Branch
-
-Write-Host "=== Done ===`n"
+Write-Host "=== Done ==="
+Write-Host ""
