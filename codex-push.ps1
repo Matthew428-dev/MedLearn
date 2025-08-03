@@ -39,6 +39,9 @@ if (-not (git diff --cached --quiet)) {
   Write-Host 'Commit created'
 } else {
   Write-Host 'Nothing to commit'
+  Write-Host '=== Done ==='
+  Write-Host ''
+  exit
 }
 
 # ----- push ------------------------------------------------------------------
