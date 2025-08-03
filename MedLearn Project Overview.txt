@@ -1,0 +1,222 @@
+MedLearn Project Overview
+A learning management system (LMS) tailored for independent pharmacies. The repository provides an Express‑based backend with MySQL storage and a Parcel/Tailwind‑powered frontend. Mailgun, reCAPTCHA, and extensive form validation support business inquiries and user authentication workflows.
+
+Technology Stack
+Runtime: Node.js (ES modules)
+
+Web framework: Express
+
+Database: MySQL (via mysql2/promise)
+
+Session & cookies: express-session, cookie-parser
+
+Validation: express-validator, custom DNS and NPI checks, Google reCAPTCHA
+
+Email: Mailgun API (mailgun.js, form-data)
+
+Frontend tooling: Parcel bundler, Tailwind CSS
+
+Other libraries: intl-tel-input, bcrypt, cors
+
+Key Environment Variables
+MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE
+SERVER_PORT                # defaults to 3000
+SESSION_SECRET
+MAILGUN_API_KEY, MAILGUN_DOMAIN, EMAIL_FROM, MAILGUN_API_BASE_URL
+RECAPTCHA_SECRET
+
+Directory Structure
+MedLearn/
+├── db/                        # Database utilities & SQL
+│   ├── database.js            # MySQL connection pool
+│   ├── queries.sql
+│   └── tables.sql
+├── src/
+│   ├── server/
+│   │   ├── server.js          # Express app setup
+│   │   ├── routes/            # API endpoints
+│   │   │   ├── companiesRoute.js
+│   │   │   ├── inquiriesRoute.js
+│   │   │   └── usersRoute.js
+│   │   ├── daos/              # Data‑access helpers
+│   │   │   ├── companiesDao.js
+│   │   │   ├── inquiriesDao.js
+│   │   │   ├── invitesDao.js
+│   │   │   └── usersDao.js
+│   │   └── utils/
+│   │       ├── mailer.js      # Mailgun helpers
+│   │       ├── mxChecker.js   # DNS MX lookup
+│   │       └── validationSchema.js
+│   └── client/
+│       ├── public/            # Unauthenticated pages
+│       │   ├── assets/        # Bundled JS/CSS/images
+│       │   ├── index.html, courses.html, inquiries.html, signin.html
+│       └── secure/            # Auth‑protected pages
+│           ├── dashboard.html
+│           └── welcome.html
+├── package.json               # scripts, deps
+├── nodemon.json               # dev‑time server watcher
+├── tailwind.config.js
+└── .gitignore
+Backend Highlights
+src/server/server.js
+Loads environment variables (dotenv).
+
+Configures Express with JSON parsing, cookies, and session middleware (8‑hour sessions, secure flag off by default).
+
+Exposes:
+
+GET /api/session – returns current session user or 401.
+
+Routers for users, companies, inquiries.
+
+requireAuth middleware and /secure static serving.
+
+Routes
+Users (routes/usersRoute.js)
+
+POST /secure/api/users – create user with validation and optional admin role.
+
+GET /secure/api/users – list users (auth required).
+
+DELETE /secure/api/users/:id – delete user (auth required).
+
+POST /api/users/login – verify credentials via usersDao.checkLogin; sets session.
+
+POST /api/users/logout – destroys session.
+
+Companies (routes/companiesRoute.js)
+
+POST /api/companies – create company.
+
+GET /api/companies – list all companies.
+
+DELETE /api/companies/:companyName – delete by name (also removes users).
+
+Inquiries (routes/inquiriesRoute.js)
+
+POST /api/inquiries – submit business inquiry; sends confirmation email via Mailgun.
+
+GET /api/npi-validation/:npi – validates NPI via external registry.
+
+Data Access Objects
+companiesDao.js – create/list/delete companies.
+
+usersDao.js
+
+Hashes passwords (bcrypt) on insert.
+
+checkLogin verifies email & password and returns minimal session payload.
+
+inquiriesDao.js
+
+Stores inquiries, approves by linking an invite, and lists unapproved inquiries.
+
+invitesDao.js – manages invite tokens with 48‑hour expiry and usage tracking.
+
+Utilities
+validationSchema.js
+
+Express‑validator schemas for users, companies, and inquiries.
+
+Custom validators: DNS MX lookup (validateDomain), NPI existence, reCAPTCHA verification.
+
+mailer.js
+
+Sends email via Mailgun; includes a helper to send inquiry confirmations.
+
+mxChecker.js
+
+Performs MX record lookup for email domain validation.
+
+Frontend Highlights
+General
+Assets compiled by Parcel; Tailwind configuration scans ./src/**/*.{html,js}.
+
+src/client/public/assets/js/lib/main.js – shared logic:
+
+Checks session to toggle “Sign In/Sign Out”.
+
+Handles navigation (dashboard access, sign out).
+
+Global showAlert utility for Tailwind‑styled notifications.
+
+Session messages stored in sessionStorage (successMsg, errorMsg, etc.).
+
+Public Pages
+index.html
+
+Landing page with hero section and featured courses.
+
+“Get Started” button redirects logged‑in users to dashboard, otherwise to inquiry form.
+
+courses.html
+
+Static catalog of 18 course cards.
+
+inquiries.html
+
+Business inquiry form with reCAPTCHA, NPI and phone validation, optional phone field.
+
+inquiries.js manages input formatting, form submission, and validation feedback.
+
+signin.html
+
+Login form that posts to /api/users/login and redirects to dashboard on success.
+
+Secure Pages
+dashboard.html
+
+Placeholder dashboard with navigation links and widgets (due soon, overdue, completed).
+
+Uses secure/dashboard.js for basic initialization and alerts.
+
+welcome.html
+
+Preliminary form for first‑time setup (company name and password creation).
+
+Database Layer
+db/tables.sql defines core tables:
+
+invites: inviteID, token, tokenUsed, expirationTime.
+
+inquiries: approved, inquiryID, inviteID, email, firstName, lastName, npi, inquiryType, phoneNumber, numOfUsers, msg.
+
+users: firstLogin, id, companyID, firstName, lastName, role, email, password_hash.
+
+companies: companyID, companyName.
+
+Build & Run Scripts (package.json)
+npm run dev – cleans dist/, runs Parcel in watch mode and the server concurrently.
+
+npm run watch – Parcel watch for public & secure HTML templates.
+
+npm run server – launches Express with nodemon.
+
+npm run build – bundles public and secure assets for production.
+
+npm start – production mode (NODE_ENV=production).
+
+Notable TODOs & Comments
+Route comments reference eventual dashboard redirects and Parcel issues.
+
+Some functions (e.g., dashboard.js) still contain placeholders for personalized greetings.
+
+usersDao.js selects minimal fields, but the query omits email despite returning it in checkLogin.
+
+Usage Summary
+Development:
+
+npm install
+npm run dev
+(Starts Parcel bundler and Express server.)
+
+Production Build:
+
+npm run build
+npm start
+Database: Ensure a MySQL instance with credentials set via .env and tables initialized from db/tables.sql.
+
+Emails & Captcha: Supply Mailgun API keys and reCAPTCHA secret for full functionality.
+
+This document should serve as a comprehensive snapshot of the MedLearn repository, helping future chats or developers quickly regain context.
