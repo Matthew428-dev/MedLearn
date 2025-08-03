@@ -1,21 +1,47 @@
-# load .env for GH_TOKEN
-foreach ($line in Get-Content ".env") {
-  if ($line -match "^\s*([^#].*?)\s*=\s*(.*)$") {
-    [Environment]::SetEnvironmentVariable($matches[1], $matches[2], "Process")
+<#  codex-push.ps1
+    Automates git add / commit / push for Codex
+    Usage:
+        powershell -ExecutionPolicy Bypass -File codex-push.ps1              # pushes to main
+        powershell -ExecutionPolicy Bypass -File codex-push.ps1 dev-feature   # pushes to dev-feature
+#>
+
+param(
+  [string]$Branch = "main"
+)
+
+Write-Host "`n=== Codex Push Script ==="
+
+#----- load .env --------------------------------------------------------------
+if (Test-Path ".env") {
+  Write-Host "Loading .env ..."
+  Get-Content ".env" | ForEach-Object {
+    if ($_ -match "^\s*([^#][^=]*)\s*=\s*(.*)$") {
+      [Environment]::SetEnvironmentVariable($Matches[1], $Matches[2], "Process")
+    }
   }
+  Write-Host "GH_TOKEN present? " ($env:GH_TOKEN -ne $null)
+} else {
+  Write-Host "WARNING: .env not found – GH_TOKEN may be missing" -ForegroundColor Yellow
 }
 
-# set commit identity (once per repo clone)
-git config user.name  "Codex"
-git config user.email "Matthew428-dev@users.noreply.github.com"
+#----- set commit identity (repo-local) ---------------------------------------
+git config user.name  "Codex"                                | Out-Null
+git config user.email "Matthew428-dev@users.noreply.github.com" | Out-Null
 
-# stage every change
+#----- stage everything -------------------------------------------------------
+Write-Host "Staging all changes ..."
 git add .
 
-# commit only if something is staged
+#----- commit if something is staged -----------------------------------------
+Write-Host "Creating commit (if needed) ..."
 if (-not (git diff --cached --quiet)) {
-  git commit -m "feat: automated Codex update"
+  $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+  git commit -m "feat: automated Codex update $timestamp"
+} else {
+  Write-Host "Nothing to commit"
 }
 
-# push to main
-git push origin main
+#----- push -------------------------------------------------------------------
+Write-Host "Pushing to $Branch ..."
+git push origin $Branch
+Write-Host "=== Done ===`n"
