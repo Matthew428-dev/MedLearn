@@ -76,6 +76,11 @@ export const createInquiryValidationSchema = {
             options: { min:1, max: 100 }
         },
         trim: true,
+        matches: {
+            options: [/\d/, 'g'],  // pattern that finds a digit
+            negated: true,         // field must NOT match that pattern
+            errorMessage: 'First name can’t contain numbers'
+        },
         errorMessage: 'First name cannot be more than 100 characters long'
     },
     lastName: {
@@ -85,6 +90,11 @@ export const createInquiryValidationSchema = {
             options: { min: 1, max: 100 }
         },
         trim: true,
+        matches: {
+            options: [/\d/, 'g'],  // pattern that finds a digit
+            negated: true,         // field must NOT match that pattern
+            errorMessage: 'Last name can’t contain numbers'
+        },
         errorMessage: 'Last name cannot be more than 100 characters long'
     },
     companyName:{

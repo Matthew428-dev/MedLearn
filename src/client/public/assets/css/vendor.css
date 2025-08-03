@@ -1,13 +1,6 @@
 /* Third‑party and vendor overrides
- *
- * This file is reserved for vendor CSS tweaks or overrides that are
- * separate from our core styles. The project currently includes
- * a dedicated phone‑override.css which modifies the default styling of
- * the intl‑tel‑input library. We import that file here without
- * modifying its contents so it gets bundled alongside our own styles.
- * If additional vendor customisations are needed in the future, they
- * can be added below.
- */
+This file is reserved for vendor CSS tweaks or overrides that are separate from the core styles.
+*/
 
 @import './phone-override.css';
 

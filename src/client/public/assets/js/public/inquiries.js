@@ -1,5 +1,6 @@
 // PSURF 2025 / MedLearn LMS / src / client / public / js / inquiries.js
 /*import 'intl-tel-input/build/css/intlTelInput.css';*/
+import e from 'express';
 import intlTelInput from 'intl-tel-input';
 
 /* <========= EVENTS ==========> */
@@ -19,12 +20,12 @@ let firstNameAttempted = false;
 const firstNameInput = document.getElementById("firstName");
 
 if(firstNameInput){
-  firstNameInput.addEventListener("input", () => {
+  firstNameInput.addEventListener("input", e => {
+    e.target.value = e.target.value.replace(/\d/g, ''); //prevents the user from inputting digits
     firstNameAttempted = true;
   });
 
   firstNameInput.addEventListener("blur", () => {
-
     if(firstNameInput.value.length > 100 && firstNameAttempted){
       disableSubmitBtn();
       window.showAlert("error","First name cannot be more than 100 characters");
@@ -37,7 +38,8 @@ let lastNameAttempted = false;
 const lastNameInput = document.getElementById("lastName");
 
 if(lastNameInput){
-  lastNameInput.addEventListener("input", () => {
+  lastNameInput.addEventListener("input", e => {
+    e.target.value = e.target.value.replace(/\d/g, ''); //prevents the user from inputting digits
     lastNameAttempted = true;
   });
 
