@@ -2,22 +2,16 @@
 /* imports all the other stylesheets in the project */
 
 
-/*tailwind imports, has to be first*/
+/* Custom style imports must come before Tailwind directives */
+@import "./settings.css" layer(base);
+@import "./base.css" layer(base);
+@import "./layout.css" layer(components);
+@import "./components.css" layer(components);
+@import "./utilities.css" layer(utilities);
+@import "./vendor.css" layer(utilities);
+@import "./captcha-override.css" layer(utilities);
+
+/* Tailwind layer directives */
 @tailwind base;
-@layer base {
-  @import "./settings.css";
-  @import "./base.css";
-}
-
 @tailwind components;
-@layer components {
-  @import "./layout.css";
-  @import "./components.css";
-}
-
 @tailwind utilities;
-@layer utilities {
-  @import "./utilities.css";
-  @import "./vendor.css";
-  @import "./captcha-override.css";
-}
