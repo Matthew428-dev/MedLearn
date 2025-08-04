@@ -39,6 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.setItem('errorMsg','');
   }
 
+  // highlight active navigation link
+  const currentPath = window.location.pathname;
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    if (link.getAttribute('href') !== '#' && link.pathname === currentPath) {
+      link.classList.add('active');
+    }
+  });
+  if (currentPath.startsWith('/secure/')) {
+    const dash = document.getElementById('dashboard-nav');
+    if (dash) dash.classList.add('active');
+  }
   
 });
 

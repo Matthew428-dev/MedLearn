@@ -33,7 +33,7 @@
     <section class="admin-content">
       <div id="tab-inquiries" class="tab-content">
         <div class="card-row">
-          <div class="card flex-1">
+          <div class="card pending-card">
             <h2>Pending Inquiries</h2>
             <table class="table">
               <thead>
@@ -43,7 +43,7 @@
                   <th>Received</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="pending-inquiries">
                 <tr>
                   <td>Jane Doe</td>
                   <td>ACME Corp</td>
@@ -57,9 +57,11 @@
               </tbody>
             </table>
           </div>
-          <div class="card flex-1">
+          <div class="card details-card">
             <h2>Inquiry Details</h2>
-            <p>Select an inquiry to view details.</p>
+            <div id="inquiry-details">
+              <p>Select an inquiry to view details.</p>
+            </div>
             <div class="flex-row" style="gap:1rem; margin-top:1rem;">
               <button class="btn-yellow">Approve</button>
               <button class="btn-yellow">Deny</button>
@@ -72,7 +74,7 @@
         <div class="card-row">
           <div class="card flex-1">
             <h2>Send Invite</h2>
-            <form>
+            <form id="send-invite-form">
               <label>Email
                 <input type="email" placeholder="user@example.com" required />
               </label>
@@ -97,7 +99,7 @@
               <button type="submit" class="btn-yellow" style="margin-top:1rem;">Send</button>
             </form>
           </div>
-          <div class="card flex-1">
+          <div class="card sent-invites-card">
             <h2>Sent Invites</h2>
             <table class="table">
               <thead>
@@ -109,7 +111,7 @@
                   <th>Expires</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="sent-invites">
                 <tr>
                   <td>ja***@mail.com</td>
                   <td>Admin</td>

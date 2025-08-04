@@ -21,6 +21,10 @@
   align-items: center; /* vertically center links */
 }
 
+.nav-links a.active {
+  color: var(--accent);
+}
+
 /* Mobile hamburger button container */
 .hamburger {
   display: none; /* hidden by default; shown in media query */
