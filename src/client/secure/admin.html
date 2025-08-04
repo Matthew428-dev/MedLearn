@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | MedLearn</title>
+  <link rel="stylesheet" href="../public/assets/css/styles.css"/>
+</head>
+<body>
+  <header class="navbar">
+    <a href="../public/index.html" class="logo">MedLearn</a>
+    <nav class="nav-links">
+      <a href="../public/index.html">Home</a>
+      <a href="../public/courses.html">Courses</a>
+      <a href="#" id="dashboard-nav">Dashboard</a>
+      <a href="../public/inquiries.html">Business Inquiries</a>
+      <a href="../public/signin.html" id="signin-nav">Sign In</a>
+      <button class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <main class="admin-layout">
+    <aside class="sidebar">
+      <nav>
+        <a href="#" class="active" data-tab="inquiries">Inquiries</a>
+        <a href="#" data-tab="invites">Invites</a>
+        <a href="#" data-tab="users">Users</a>
+        <a href="#" data-tab="companies">Companies</a>
+        <a href="#" data-tab="courses">Courses</a>
+      </nav>
+    </aside>
+
+    <section class="admin-content">
+      <div id="tab-inquiries" class="tab-content">
+        <div class="card-row">
+          <div class="card flex-1">
+            <h2>Pending Inquiries</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Company</th>
+                  <th>Received</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Jane Doe</td>
+                  <td>ACME Corp</td>
+                  <td>2025-01-01</td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>Globex</td>
+                  <td>2025-01-05</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card flex-1">
+            <h2>Inquiry Details</h2>
+            <p>Select an inquiry to view details.</p>
+            <div class="flex-row" style="gap:1rem; margin-top:1rem;">
+              <button class="btn-yellow">Approve</button>
+              <button class="btn-yellow">Deny</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-invites" class="tab-content hidden">
+        <div class="card-row">
+          <div class="card flex-1">
+            <h2>Send Invite</h2>
+            <form>
+              <label>Email
+                <input type="email" placeholder="user@example.com" required />
+              </label>
+              <label>Role
+                <select required>
+                  <option value="" disabled selected>Select role</option>
+                  <option>Admin</option>
+                  <option>Manager</option>
+                  <option>Employee</option>
+                </select>
+              </label>
+              <label>Company
+                <select required>
+                  <option value="" disabled selected>Select company</option>
+                  <option>ACME Corp</option>
+                  <option>Globex</option>
+                </select>
+              </label>
+              <label>Expiration
+                <input type="date" required />
+              </label>
+              <button type="submit" class="btn-yellow" style="margin-top:1rem;">Send</button>
+            </form>
+          </div>
+          <div class="card flex-1">
+            <h2>Sent Invites</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Company</th>
+                  <th>Status</th>
+                  <th>Expires</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ja***@mail.com</td>
+                  <td>Admin</td>
+                  <td>ACME</td>
+                  <td>Pending</td>
+                  <td>2025-02-01</td>
+                </tr>
+                <tr>
+                  <td>sm***@mail.com</td>
+                  <td>Manager</td>
+                  <td>Globex</td>
+                  <td>Sent</td>
+                  <td>2025-03-01</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const links = document.querySelectorAll('.sidebar a');
+    const tabs = document.querySelectorAll('.tab-content');
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        tabs.forEach(t => t.classList.add('hidden'));
+        document.getElementById('tab-' + link.dataset.tab).classList.remove('hidden');
+      });
+    });
+  </script>
+  <script type="module" src="../public/assets/js/lib/main.js"></script>
+</body>
+</html>
