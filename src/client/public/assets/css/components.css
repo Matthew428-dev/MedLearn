@@ -443,3 +443,35 @@
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
 }
+
+/* Layout wrapper */
+.admin-layout {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Sidebar base */
+.sidebar {
+  width: 240px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar a {
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
+.sidebar a.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Main content area */
+.admin-content {
+  flex: 1;
+}
