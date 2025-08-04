@@ -267,3 +267,8 @@
     gap: 1rem; /* reduce spacing for mobile */
   }
 }
+
+/* keeps background consistent with dashboard/home */
+.admin-layout{
+  min-height:calc(100vh - 120px);
+}

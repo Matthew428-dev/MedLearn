@@ -121,9 +121,9 @@
     #0b111e 45%,
     #d4ae13 80%,
     #facc15 100%);
-  /*background-attachment: fixed;
+  background-attachment: fixed;
   background-size: 100vw 100vh;
-  background-repeat: no-repeat;*/ /* UNCOMMENT IF CHATGPT MESSES UP*/
+  background-repeat: no-repeat;
   border: 1px solid var(--card-border);
   border-radius: 0.75rem;
   backdrop-filter: blur(3px);
@@ -153,9 +153,9 @@
     #0b111e 55%,
     #d4ae13 80%,
     #facc15 100%);
-  /*background-attachment: fixed;
+  background-attachment: fixed;
   background-size: 100vw 100vh;
-  background-repeat: no-repeat;*/ /* UNCOMMENT IF CHATGPT MESSES UP*/
+  background-repeat: no-repeat;
 }
 
 /* Icon container inside status cards */
@@ -233,9 +233,9 @@
   border-radius: 1rem;
   border: 1px solid var(--card-border);
   background: linear-gradient(135deg,#0b111e 0%,#0b111e 45%,#d4ae13 80%,#facc15 100%);
-  /*background-attachment: fixed;
+  background-attachment: fixed;
   background-size: 100vw 100vh;
-  background-repeat: no-repeat;*/ /* UNCOMMENT IF CHATGPT MESSES UP*/
+  background-repeat: no-repeat;
   backdrop-filter: blur(3px); /* glass effect */
 }
 
@@ -257,6 +257,30 @@
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
+}
+
+/*shared gradient between the cards on the inquires tab within the admin page*/
+.card.pending-card, .card.details-card {
+  background: linear-gradient(135deg,
+    #0b111e 0%,
+    #0b111e 45%,
+    #d4ae13 80%,
+    #facc15 100%);
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
+}
+
+/*shared gradient between the cards on the invites tab within the admin page*/
+.card.send-invite-card, .card.sent-invites-card {
+  background: linear-gradient(135deg,
+    #0b111e 0%,
+    #0b111e 35%,
+    #d4ae13 80%,
+    #facc15 100%);
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
 }
 
 /* Admin page specific card sizing */
@@ -310,9 +334,9 @@
     #0b111e 50%,
     #d4ae13 80%,
     #facc15 100%);
-  /*background-attachment: fixed;
+  background-attachment: fixed;
   background-size: 100vw 100vh;
-  background-repeat: no-repeat;*/ /* UNCOMMENT IF CHATGPT MESSES UP*/
+  background-repeat: no-repeat;
 }
 
 /* Sign in card heading */
@@ -330,8 +354,8 @@
   border-radius: 1rem;
   border: 1px solid var(--card-border);
   background: linear-gradient(135deg,#0b111e 0%,#0b111e 55%,#d4ae13 80%,#facc15 100%);
-  /*background-attachment: fixed;
-  background-size: 100vw 100vh;*/ /* UNCOMMENT IF CHATGPT MESSES UP*/
+  background-attachment: fixed;
+  background-size: 100vw 100vh;
   backdrop-filter: blur(3px);
 }
 
@@ -425,9 +449,9 @@
     #0b111e 25%,
     #d4ae13 65%,
     #facc15 100%);
-  /*background-attachment: fixed;
+  background-attachment: fixed;
   background-size: 100vw 100vh;
-  background-repeat: no-repeat;*/ /* UNCOMMENT IF CHATGPT MESSES UP*/
+  background-repeat: no-repeat;
   border: 1px solid var(--card-border);
   border-radius: 0.75rem;
   backdrop-filter: blur(3px);
@@ -510,6 +534,11 @@
   gap: 2rem;
 }
 
+/* maybe remove*/
+.admin-layout .card{
+  border: none;
+}
+
 /* Sidebar base */
 .sidebar {
   width: 240px;
@@ -521,12 +550,18 @@
   gap: 0.5rem;
 }
 
-.sidebar a {
-  display: block;
-  padding: 0.5rem 1rem;
+/* sidebar links – weight, radius, hover + active highlight */
+.sidebar a{
+  display:flex;            /* put icon + text on one flex line */
+  align-items:center;      /* vertically center them */
+  gap:.75rem;              /* space between icon and label */
+  padding:.5rem 1rem;
+  font-weight:500;
+  border-radius:.5rem;
+  transition:background .2s; 
 }
-
-.sidebar a.active {
+.sidebar a:hover{background:rgba(255,255,255,.06);}
+.sidebar a.active{
   background: none;
   color: var(--accent);
 }
@@ -535,4 +570,8 @@
 .admin-content {
   flex: 1;
   padding-right: 2rem;
+}
+
+.admin-header {
+  border-top: none !important;
 }

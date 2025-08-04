@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin | MedLearn</title>
   <link rel="stylesheet" href="../public/assets/css/styles.css"/>
+  <!-- Google Material Icons -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
+
 </head>
 <body>
   <header class="navbar">
@@ -21,13 +25,15 @@
 
   <main class="admin-layout">
     <aside class="sidebar">
-      <nav>
-        <a href="#" class="active" data-tab="inquiries">Inquiries</a>
-        <a href="#" data-tab="invites">Invites</a>
-        <a href="#" data-tab="users">Users</a>
-        <a href="#" data-tab="companies">Companies</a>
-        <a href="#" data-tab="courses">Courses</a>
-      </nav>
+        <nav>
+            <a data-tab="inquiries" class="active">
+            <span class="material-icons-outlined">contact_page</span> Inquiries
+            </a>
+            <a data-tab="invites"><span class="material-icons-outlined">mail</span> Invites</a>
+            <a data-tab="users"><span class="material-icons-outlined">people</span> Users</a>
+            <a data-tab="companies"><span class="material-icons-outlined">domain</span> Companies</a>
+            <a data-tab="courses"><span class="material-icons-outlined">menu_book</span> Courses</a>
+        </nav>
     </aside>
 
     <section class="admin-content">
@@ -72,7 +78,7 @@
 
       <div id="tab-invites" class="tab-content hidden">
         <div class="card-row">
-          <div class="card flex-1">
+          <div class="card send-invite-card">
             <h2>Send Invite</h2>
             <form id="send-invite-form">
               <label>Email
