@@ -3,11 +3,11 @@ import { Router } from 'express'
 import { checkSchema, validationResult, matchedData } from 'express-validator'
 import { createUser, getUsers, deleteUser, checkLogin} from '../daos/usersDao.js'
 import { createUserValidationSchema } from '../utils/validationSchema.js'
-import { requireAuth } from '../server.js' // Assuming requireAuth is exported from server.js
+import { requireAuth, requireManager, requireAdmin } from '../server.js' // Assuming requireAuth is exported from server.js
 
 const router = Router()
 
-// POST   /api/users
+//create a new user
 router.post('/secure/api/users',checkSchema(createUserValidationSchema), async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
@@ -24,8 +24,8 @@ router.post('/secure/api/users',checkSchema(createUserValidationSchema), async (
   }
 )
 
-// GET    /api/users
-router.get('/secure/api/users', requireAuth, async (req, res) => {
+// get all users
+router.get('/secure/api/users', requireAdmin, async (req, res) => {
   try {
     const users = await getUsers()
     res.json(users)
@@ -35,7 +35,7 @@ router.get('/secure/api/users', requireAuth, async (req, res) => {
   }
 })
 
-// DELETE /api/users/:id
+// DELETE user by id
 router.delete('/secure/api/users/:id', requireAuth, async (req, res) => {
   try {
     const result = await deleteUser(req.params.id)
@@ -50,7 +50,7 @@ router.delete('/secure/api/users/:id', requireAuth, async (req, res) => {
   }
 })
 
-// POST   /api/users/login
+// login endpoint
 router.post('/api/users/login', async (req, res) => {
   const { email, password } = req.body;
 

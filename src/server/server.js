@@ -5,7 +5,11 @@ dotenv.config();
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
-import path from 'path';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
 
 import usersRouter from './routes/usersRoute.js';
 import companiesRouter from './routes/companiesRoute.js';
@@ -50,13 +54,29 @@ function requireAuth(req, res, next) {
   next();
 }
 
+function requireManager(req, res, next) {
+  requireAuth(req, res, () => {
+    if (!req.session?.user || req.session.user.role !== 'm' || req.session.user.role !== 'a') {
+      return res.sendStatus(403);
+    }
+    next();
+  });
+}
+
+function requireAdmin(req, res, next) {
+  requireAuth(req, res, () => {
+    if (!req.session?.user || req.session.user.role !== 'a') {
+      return res.sendStatus(403);
+    }
+    next();
+  });
+}
+
 // serve front-end from dist on a single port
 // secure routes are protected and served from /secure
-app.use(
-  '/secure',
-  requireAuth,
-  express.static(path.join(process.cwd(), 'dist', 'secure'))
-);
+app.use('/secure', requireAuth, express.static(path.join(process.cwd(), 'dist', 'secure')));
+app.use('/secure/admin', requireAdmin, express.static(path.join(__dirname, 'src/client/secure/admin')));
+app.use('/secure/manager', requireManager, express.static(path.join(__dirname, 'src/client/secure/manager')));
 
 app.use(express.static(path.join(process.cwd(), 'dist')));
 
@@ -65,4 +85,4 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-export { requireAuth };
+export { requireAuth , requireManager, requireAdmin }; // Exporting auth functions for use in routes

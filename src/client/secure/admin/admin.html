@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin | MedLearn</title>
-  <link rel="stylesheet" href="../public/assets/css/styles.css"/>
+  <link rel="stylesheet" href="../../public/assets/css/styles.css"/>
   <!-- Google Material Icons -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
@@ -12,13 +12,13 @@
 </head>
 <body>
   <header class="navbar">
-    <a href="../public/index.html" class="logo">MedLearn</a>
+    <a href="../../public/index.html" class="logo">MedLearn</a>
     <nav class="nav-links">
-      <a href="../public/index.html">Home</a>
-      <a href="../public/courses.html">Courses</a>
+      <a href="../../public/index.html">Home</a>
+      <a href="../../public/courses.html">Courses</a>
       <a href="#" id="dashboard-nav">Dashboard</a>
-      <a href="../public/inquiries.html">Business Inquiries</a>
-      <a href="../public/signin.html" id="signin-nav">Sign In</a>
+      <a href="../../public/inquiries.html">Business Inquiries</a>
+      <a href="../../public/signin.html" id="signin-nav">Sign In</a>
       <button class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
     </nav>
   </header>
@@ -50,16 +50,7 @@
                 </tr>
               </thead>
               <tbody id="pending-inquiries">
-                <tr>
-                  <td>Jane Doe</td>
-                  <td>ACME Corp</td>
-                  <td>2025-01-01</td>
-                </tr>
-                <tr>
-                  <td>John Smith</td>
-                  <td>Globex</td>
-                  <td>2025-01-05</td>
-                </tr>
+                <!-- elements will be created here via javascript to display the inquiries-->
               </tbody>
             </table>
           </div>
@@ -153,6 +144,7 @@
       });
     });
   </script>
-  <script type="module" src="../public/assets/js/lib/main.js"></script>
+  <script type="module" src="../../public/assets/js/lib/main.js"></script>
+  <script type="module" src="../../public/assets/js/secure/admin.js"></script>
 </body>
 </html>

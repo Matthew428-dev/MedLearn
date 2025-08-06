@@ -6,12 +6,12 @@
         "node_modules/intl-tel-input/build/js/utils.js"
     ],
     "scripts": {
-        "clean": "rimraf dist",
-        "watch": "parcel watch \"src/client/public/*.html\" \"src/client/secure/*.html\" --dist-dir dist --public-url /",
+        "clean": "rimraf .parcel-cache dist",
+        "watch": "parcel watch \"src/client/public/*.html\" \"src/client/secure/**/*.html\" --dist-dir dist --public-url /",
         "server": "nodemon src/server/server.js",
         "dev": "npm-run-all --parallel clean watch server",
         "build:public": "parcel build \"src/client/public/*.html\" --dist-dir dist --public-url /",
-        "build:secure": "parcel build \"src/client/secure/*.html\" --dist-dir dist/secure --public-url /secure",
+        "build:secure": "parcel build \"src/client/secure/**/*.html\" --dist-dir dist/secure --public-url /secure",
         "build": "npm-run-all --parallel build:public build:secure",
         "start": "NODE_ENV=production node src/server/server.js"
     },

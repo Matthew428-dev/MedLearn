@@ -1,2 +1,2 @@
 use medlearnLMS;
-select * from inquiries;
+alter table inquiries drop column createdAt;

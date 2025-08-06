@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { checkSchema, validationResult, matchedData } from 'express-validator'
 import {createInquiry,approveInquiry,getUnapprovedInquiries} from '../daos/inquiriesDao.js'
 import { createInquiryValidationSchema } from '../utils/validationSchema.js'
-import { requireAuth } from '../server.js' // Assuming requireAuth is exported from server.js
+import { requireAuth,requireAdmin } from '../server.js' // Assuming requireAuth is exported from server.js
 import { sendInquiryConfirmation } from '../utils/mailer.js'
 
 const router = Router()
@@ -51,6 +51,16 @@ router.get('/api/npi-validation/:npi', async (req, res) => {
   } catch (err) {
     console.error('Error validating NPI:', err);
     return res.status(500).json({ error: 'Failed to validate NPI' });
+  }
+});
+
+router.get('/api/inquiries/unapproved', requireAdmin, async (req, res) => {
+  try {
+    const inquiries = await getUnapprovedInquiries();
+    return res.json(inquiries);
+  } catch (error) {
+    console.error('Error fetching unapproved inquiries:', error);
+    return res.status(500).json({ error: 'Failed to fetch unapproved inquiries' });
   }
 });
 

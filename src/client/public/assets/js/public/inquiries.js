@@ -1,6 +1,5 @@
 // PSURF 2025 / MedLearn LMS / src / client / public / js / inquiries.js
 /*import 'intl-tel-input/build/css/intlTelInput.css';*/
-import e from 'express';
 import intlTelInput from 'intl-tel-input';
 
 /* <========= EVENTS ==========> */
