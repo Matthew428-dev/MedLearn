@@ -1,2 +1,2 @@
 use medlearnLMS;
-alter table inquiries drop column createdAt;
+select * from invites;

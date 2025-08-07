@@ -1,14 +1,14 @@
 import { pool } from '../../../db/database.js';
 
 export const createInvite = async (token) => {
-  const expirationTime = new Date(Date.now() + 48 * 60 * 60 * 1000); // 48 hours from now
   const [result] = await pool.query(
-    'INSERT INTO invites (token, expirationTime) VALUES (?, ?)',
-    [token, expirationTime]
+    'INSERT INTO invites (token) VALUES (?)',
+    [token]
   );
-  return result;
+  return { inviteID: result.insertId, token: token };
 }
 
+//i dont remember adding this but i think its unnecessary, check it out eventually
 export const getInviteByToken = async (token) => {
     const [rows] = await pool.query(
         'SELECT * FROM invites WHERE token = ? LIMIT 1',

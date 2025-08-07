@@ -203,3 +203,7 @@ export const createInquiryValidationSchema = {
     errorMessage: 'Invalid reCAPTCHA'   // shown only if you *return false*
   }
 }
+
+export const updateInquiryValidationSchema = {
+    //TODO: implement validation schema
+}
