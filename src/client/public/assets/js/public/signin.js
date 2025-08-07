@@ -14,8 +14,6 @@ form.addEventListener('submit', async e => {
   const result = await checkLogin(email, password);
   if (result.ok) {
     sessionStorage.setItem('successMsg','Success! You have been logged in.')
-    //TODO fix this so that it actually redirects the user to the dashboard.
-    //For some reason it redirects the user to index.html, its something to do with parcel
     window.location.href = '/secure/dashboard.html';
   } else {
     window.showAlert('error','Invalid email or password');

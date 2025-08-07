@@ -4,7 +4,7 @@ import {createInquiry,updateInquiryStatus,getPendingInquiries,getInquiryByID} fr
 import {createInvite} from '../daos/invitesDao.js';
 import { createInquiryValidationSchema, updateInquiryValidationSchema } from '../utils/validationSchema.js';
 import { requireAdmin } from '../server.js';
-import { sendInquiryConfirmation } from '../utils/mailer.js';
+import { sendInquiryConfirmationEmail, sendInquiryApprovedEmail } from '../utils/mailer.js';
 import { randomBytes } from 'crypto';
 import bcrypt from 'bcrypt';
 
@@ -19,7 +19,7 @@ router.post('/api/inquiries', checkSchema(createInquiryValidationSchema), async 
   const {email,firstName,lastName,companyName,npi,inquiryType,phoneNumber,numOfUsers,msg} = matchedData(req);
   try {
     const newInquiry = await createInquiry(email,firstName,lastName,companyName,npi,inquiryType,phoneNumber,numOfUsers,msg);
-    await sendInquiryConfirmation(email, firstName)
+    await sendInquiryConfirmationEmail(email, firstName)
     return res.status(201).json(newInquiry);
   } catch (error) {
     console.error('Error creating inquiry:', error);
@@ -83,10 +83,9 @@ router.get("/api/inquiries/:inquiryID", requireAdmin, async (req, res) => {
   }
 });
 
-//approve an inquiry
-router.patch("/api/inquiries/:id/updatestatus",/*checkSchema(updateInquiryValidationSchema),*/requireAdmin, async (req,res) => {
-  //TODO: Update inquiry status (approved or denied) and create the invite
-  
+//approve an inquiry and create an invite
+router.patch("/api/inquiries/:inquiryID/updatestatus",checkSchema(updateInquiryValidationSchema),requireAdmin, async (req,res) => {
+
   //checks for validation errors 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -99,18 +98,24 @@ router.patch("/api/inquiries/:id/updatestatus",/*checkSchema(updateInquiryValida
 
   //get the values from the req
   const { status } = req.body;
-  const {inquiryID} = req.params;
+  const { inquiryID } = req.params;
 
-  if(status === "1"){ //inquiry is approved
+  if(status === 1){ //inquiry is approved
     try{
       //create invite
       const newInvite = await createInvite(tokenHash);
       
       //update the inquiries status and insert the inviteID from the new invite
-      const statusUpdate = updateInquiryStatus(inquiryID, status, newInvite.inviteID);
+      await updateInquiryStatus(inquiryID, status, newInvite.inviteID);
+      
+      //have to get the inquiry so that we can send the correct information in the email
+      const inquiry = await getInquiryByID(inquiryID);
 
-      //TODO: send confirmation email
+      //create the url for the invite link in the email
+      const baseUrl    = process.env.FRONTEND_URL || 'http://localhost:3000';
+      const inviteUrl  = `${baseUrl}/onboard?token=${plainToken}`;
 
+      sendInquiryApprovedEmail(inquiry.email,inquiry.firstName,inquiry.lastName,inquiry.createdAt,inquiry.companyName,inviteUrl);
 
       return res.status(201).json({message: "Success, status updated to approved and invite created"});
     }
@@ -122,7 +127,7 @@ router.patch("/api/inquiries/:id/updatestatus",/*checkSchema(updateInquiryValida
   else{ //inquiry is not approved
     try{
       //update the status to denied, don't create invite, don't send email
-      const statusUpdate = updateInquiryStatus(inquiryID, status, null);
+      await updateInquiryStatus(inquiryID, status, null);
       return res.status(201).json({message: "Success, status updated to denied"})
     }
     catch(error){

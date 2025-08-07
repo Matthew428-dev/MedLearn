@@ -3,7 +3,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 //TODO add code to make it say "welcome back, <firstname>"
-  msg = sessionStorage.getItem('goodLoginMsg');
+  const msg = sessionStorage.getItem('successMsg');
   if(msg){
     window.showAlert('success',sessionStorage.getItem('loginMsg'));
   }

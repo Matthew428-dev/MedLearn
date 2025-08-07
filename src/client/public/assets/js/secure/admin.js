@@ -1,4 +1,5 @@
 /* <========EVENTS=========>*/
+let currentInquiryID;
 
 //when the page loads, display the pending inquiries
 const pendingInquiries = document.getElementById('pending-inquiries');
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const tr = document.createElement('tr');
 
             //adds the inquiry ID to the table row
-            tr.dataset.inquiryID = inquiry.inquiryID;
+            tr.dataset.inquiryId = inquiry.inquiryID;
 
             ['name', 'company', 'createdAt'].forEach(key2 => {
                 const td = document.createElement('td');
@@ -39,16 +40,70 @@ document.addEventListener("DOMContentLoaded", async () => {
 const detailsBody = document.getElementById('inquiry-details');
 //pendingInquiries element defined near the top of this file
 pendingInquiries.addEventListener('click', async (e) => {
-    const id = e.target.closest('tr').dataset.inquiryID;
+    const id = e.target.closest('tr').dataset.inquiryId;
     //safeguard to ensure id is not null
     if (id) {
         //get the inquiry details
         const inquiryDetails = await fetchInquiryDetails(id);
 
+        //used later by the approve and deny btns
+        currentInquiryID = id;
+
         //build the details text
         detailsBody.innerHTML = "<b>Name:</b> " + inquiryDetails.name + "<br><b>Email:</b> " + inquiryDetails.email + "<br><b>Company:</b> " + inquiryDetails.company + "<br><b>Inquiry Type:</b> " + inquiryDetails.inquiryType + "<br><b>NPI:</b> " + inquiryDetails.npi + "<br><b>Number of Users:</b> " + inquiryDetails.numOfUsers + "<br><b>Message:</b> " + inquiryDetails.msg + "<br><b>Phone Number:</b> " + inquiryDetails.phoneNumber + "<br><b>Created At:</b> " + inquiryDetails.createdAt;
     }
 });
+
+const approveBtn = document.getElementById('approve-btn');
+approveBtn.addEventListener('click', async function() {
+    
+    //if no inquiry is selected, just return
+    if (!currentInquiryID){
+        return;
+    }
+
+    //update inquiry status to approved
+    await fetchUpdateInquiryStatus(currentInquiryID, 1);
+
+    //get the row that has the same inquiry ID
+    var row = pendingInquiries.querySelector('tr[data-inquiry-id="' + currentInquiryID + '"]');
+    //if the row exists, remove it
+    if (row){ 
+        row.remove();
+    }
+    //also resert the details box
+    detailsBody.textContent = '';
+    currentInquiryID = null;
+});
+
+const denyBtn = document.getElementById('deny-btn');
+denyBtn.addEventListener('click', async function() {
+    if (!currentInquiryID){
+        return; //no inquiry selected
+    }
+
+    //update inquiry status to denied, hence the -1
+    await fetchUpdateInquiryStatus(currentInquiryID, -1);
+    
+    //get the row that has the same inquiry id
+    var row = pendingInquiries.querySelector('tr[data-inquiry-id="' + currentInquiryID + '"]');
+    
+    //if the row exists, delete it (resetting the table)
+    if (row){ 
+        row.remove();
+    }
+
+    //reset the details box too
+    detailsBody.textContent = '';
+    currentInquiryID = null;
+});
+
+
+
+
+
+
+
 
 /*<=======EXTRA FUNCTIONS=========>*/
 
@@ -86,7 +141,7 @@ async function fetchInquiryDetails(inquiryID){
     try{
         response = await fetch("/api/inquiries/" + inquiryID);
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Server error');
         }
     }
     catch(error){
@@ -116,6 +171,23 @@ function parseTimeStamp(timeStamp){
     return parsedTimeStamp;
 }
 
-async function approveInquiry(inquiryID){
-    //TODO: Fetch the corresponding endpoint and send confirmation email
-}
+//calls the correct endpoint to update the inquiry status AND create the invite
+//status = 1 => approved, status = 0 => pending, status = -1 => denied
+async function fetchUpdateInquiryStatus(inquiryID,status){
+    let response;
+    try{
+        response = await fetch("/api/inquiries/" + inquiryID + "/updatestatus",{
+            method: 'PATCH',
+            headers: {"Content-Type": "application/json"},
+            credentials: "include",
+            body: JSON.stringify({status})
+        });
+        if(!response.ok){
+            throw new Error('Server error');
+        }
+    }
+    catch(error){
+        console.error("Error updating inquiry status and creating invite: ", error);
+        return;
+    }
+};

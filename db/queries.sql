@@ -1,2 +1,2 @@
 use medlearnLMS;
-select * from invites;
+describe invites;

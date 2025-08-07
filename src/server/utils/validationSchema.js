@@ -205,5 +205,16 @@ export const createInquiryValidationSchema = {
 }
 
 export const updateInquiryValidationSchema = {
-    //TODO: implement validation schema
+    inquiryID: {
+        in: ['params'],
+        isInt: true,
+        toInt: true,
+        errorMessage: 'Invalid inquiry ID'
+    },
+    status: {
+        in: ['body'],
+        isIn: { options: [['1', '-1']] },
+        trim: true,
+        errorMessage: 'Status must be either 1 (approved) or -1 (denied)'
+    }
 }
