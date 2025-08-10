@@ -5,7 +5,7 @@ import { createUser, getUsers, deleteUser, checkLogin} from '../daos/usersDao.js
 import { createUserValidationSchema } from '../utils/validationSchema.js'
 import { requireAuth, requireManager, requireAdmin } from '../server.js' // Assuming requireAuth is exported from server.js
 
-const router = Router()
+const router = Router();
 
 //create a new user
 router.post('/secure/api/users',checkSchema(createUserValidationSchema), async (req, res) => {
@@ -27,7 +27,7 @@ router.post('/secure/api/users',checkSchema(createUserValidationSchema), async (
 // get all users
 router.get('/secure/api/users', requireAdmin, async (req, res) => {
   try {
-    const users = await getUsers()
+    const users = await getUsers();
     res.json(users)
   } catch (err) {
     console.error(err)
@@ -43,10 +43,10 @@ router.delete('/secure/api/users/:id', requireAuth, async (req, res) => {
             // no such user existed
         return res.status(404).json({ error: 'User not found' });
     }
-    res.json({ status: 'User deleted successfully' })
+    res.json({ status: 'User deleted successfully' });
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Server error' })
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
   }
 })
 
@@ -65,13 +65,15 @@ router.post('/api/users/login', async (req, res) => {
     email:     user.email,
     companyId: user.companyID,
     role:      user.role,
-    firstLogin: user.firstLogin
+    firstLogin: user.firstLogin,
+    firstName: user.firstName,
+    lastName: user.lastName
   };
 
   return res.json({ message: 'Login successful' });
 });
 
-router.post("/api/users/logout", requireAuth, async (req, res) => {
+router.post('/api/users/logout', requireAuth, async (req, res) => {
   req.session.destroy(err => {
     if (err) {
       console.error(err);

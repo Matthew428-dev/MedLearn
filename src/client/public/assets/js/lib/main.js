@@ -3,11 +3,13 @@
 //<=========EVENTS==========>
 const adminNav = document.getElementById('admin-nav');
 const dashboardNav = document.getElementById('dashboard-nav');
-const user = await authFetch();
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', async () => {
   
   //checks if the user is logged in
+  const user = await authFetch();
   if(user){
+    console.log(user);
     document.getElementById('signin-nav').textContent = 'Sign Out';
     //later incorporate a profile picture and icon instead of just "sign out"
 
@@ -58,11 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
       link.classList.add('active');
     }
   });
-  if (currentPath.startsWith('/secure/')) {
-    //TODO: edit this so admin lights up when the user is on the admin page
-    if (dashboardNav){
-      dashboardNav.classList.add('active');
-    }
+
+  //this has to be modified if more nav-links are added
+  if (currentPath.startsWith('/secure/admin')) {
+    adminNav?.classList.add('active');
+  } 
+  else if (currentPath.startsWith('/secure/')) {
+    dashboardNav?.classList.add('active');
   }
 });
 
@@ -81,9 +85,9 @@ dashboardNav.addEventListener('click', async (e) => {
 adminNav.addEventListener('click', async (e) => {
   e.preventDefault();
   //TODO: check if user is admin and redirect the user to the proper page
-  const user = authFetch();
+  const user = await authFetch();
   if(user.role === 'a'){
-    window.location.href = "/secure/admin/admin/html";
+    window.location.href = "/secure/admin/admin.html";
   }
   else{
     sessionStorage.setItem('errorMsg',"You must be an admin to access this page");

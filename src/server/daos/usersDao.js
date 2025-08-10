@@ -36,7 +36,7 @@ export const deleteUser = async(id) => {
 
 export const checkLogin = async (email, password) => {
   const [rows] = await pool.query(
-    'SELECT firstLogin, id, companyID, role, email, password_hash FROM users WHERE email = ? LIMIT 1',
+    'SELECT firstLogin, id, firstName, lastName, companyID, role, email, password_hash FROM users WHERE email = ? LIMIT 1',
     [email]
   );
   if (!rows.length) return false;            // email not found
@@ -46,5 +46,5 @@ export const checkLogin = async (email, password) => {
   if (!match) return false;                  // bad password
 
   // return ONLY the data needed for the session
-  return { id: user.id, email: user.email, companyID: user.companyID, role: user.role, firstLogin: user.firstLogin };
+  return { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, companyID: user.companyID, role: user.role, firstLogin: user.firstLogin };
 };
