@@ -46,15 +46,15 @@ export function sendInquiryApprovedEmail(to,firstName,lastName,createdAt,company
   const subject = 'Your MedLearn Inquiry Has Been Approved'
   const text = `Hi ${firstName} ${lastName},
 
-We’re pleased to let you know that your inquiry submitted on ${createdAt} has been approved. You now have full access to MedLearn’s course materials and dashboard for ${companyName}.
+We’re pleased to let you know that your inquiry submitted on ${createdAt} has been approved. You now have full access to MedLearn’s course materials for ${companyName}.
 
 To get started:
 
-Click this one-time link to create your password and set up your profile (the link will expire in 72 hours): https://example.com/activate
+Click this one-time link to create your password and set up your profile (the link will expire in 72 hours): ${helpUrl}
 
 After setting up your account, you will have 7-day access to all courses
 
-If you need any assistance, reply to this email or visit our help center at ${helpUrl}
+If you need any assistance, reply to this email or reach out to us by phone at (409)-599-7103. We're available Monday-Friday 8:00am to 6:00am MT
 
 Welcome aboard and thank you for choosing MedLearn.
 
@@ -66,13 +66,13 @@ The MedLearn Team`
       <div style="max-width:600px;margin:0 auto;background-color:#1a202c;border:1px solid #2d3748;padding:20px;border-radius:8px;">
         <h1 style="color:#ffd75f;margin-top:0;">MedLearn</h1>
         <p>Hi ${firstName} ${lastName},</p>
-        <p>We’re pleased to let you know that your inquiry submitted on ${createdAt} has been approved. You now have full access to MedLearn’s course materials and dashboard for ${companyName}.</p>
+        <p>We’re pleased to let you know that your inquiry submitted on ${createdAt} has been approved. You now have full access to MedLearn’s course materials for ${companyName}.</p>
         <h2 style="color:#ffd75f;">To get started:</h2>
         <ol style="padding-left:20px;">
-          <li style="margin-bottom:8px;"><a href="#" style="color:#ffd75f;text-decoration:underline;">Click this one-time link to create your password and set up your profile</a> (the link will expire in 72 hours)</li>
+          <li style="margin-bottom:8px;"><a href="${helpUrl}" style="color:#ffd75f;text-decoration:underline;">Click this one-time link to create your password and set up your profile</a> (the link will expire in 72 hours)</li>
           <li>After setting up your account, you will have 7-day access to all courses</li>
         </ol>
-        <p>If you need any assistance, reply to this email or visit our help center at <a href="${helpUrl}" style="color:#ffd75f;text-decoration:underline;">${helpUrl}</a></p>
+        <p>If you need any assistance, reply to this email or reach out to us by phone at (409)-599-7103. We're available Monday-Friday 8:00am to 6:00am MT" style="color:#ffd75f;text-decoration:underline;">${helpUrl}</a></p>
         <p>Welcome aboard and thank you for choosing MedLearn.</p>
         <p>Best regards<br/>The MedLearn Team</p>
       </div>

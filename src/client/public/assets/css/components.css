@@ -575,3 +575,8 @@
 .admin-header {
   border-top: none !important;
 }
+
+/*the admin navigation link is hidden by default*/
+#admin-nav{
+  display: none;
+}

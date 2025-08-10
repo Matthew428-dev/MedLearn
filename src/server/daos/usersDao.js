@@ -20,6 +20,7 @@ export const getUsers = async () => {
   return rows;
 };
 
+//i dont think i need this function to be honest but left it here just in case
 export const getUserByEmail = async (email) => {
   const [rows] = await pool.query('SELECT id, role, companyID FROM users WHERE email = ?', [email]);
   if (rows.length === 0) {

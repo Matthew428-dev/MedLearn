@@ -213,7 +213,7 @@ export const updateInquiryValidationSchema = {
     },
     status: {
         in: ['body'],
-        isIn: { options: [['1', '-1']] },
+        isIn: { options: [[1, -1]] },
         trim: true,
         errorMessage: 'Status must be either 1 (approved) or -1 (denied)'
     }

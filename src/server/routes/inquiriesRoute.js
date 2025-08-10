@@ -97,8 +97,8 @@ router.patch("/api/inquiries/:inquiryID/updatestatus",checkSchema(updateInquiryV
   const tokenHash  = await bcrypt.hash(plainToken, 10); // store this in invites table in mysql
 
   //get the values from the req
-  const { status } = req.body;
-  const { inquiryID } = req.params;
+  const { status: statusRaw, inquiryID } = matchedData(req);
+  const status = Number(statusRaw);
 
   if(status === 1){ //inquiry is approved
     try{

@@ -39,7 +39,9 @@ app.use(
 
 // public session check
 app.get('/api/session', (req, res) => {
-  if (req.session?.user) return res.json(req.session.user);
+  if (req.session?.user){
+    return res.json(req.session.user); 
+  } 
   res.sendStatus(401);
 });
 
@@ -48,7 +50,7 @@ app.use(usersRouter);
 app.use(companiesRouter);
 app.use(inquiriesRouter);
 
-// auth guard
+// auth guards
 function requireAuth(req, res, next) {
   if (!req.session?.user) return res.sendStatus(401);
   next();

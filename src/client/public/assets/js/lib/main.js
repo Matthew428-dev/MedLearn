@@ -1,24 +1,36 @@
 //PSURF 2025 / MedLearn LMS / src / client / public / js
 
-
-// ON PAGE LOAD
-fetch('/api/session').then(response => {
-  if(response.ok){
+//<=========EVENTS==========>
+const adminNav = document.getElementById('admin-nav');
+const dashboardNav = document.getElementById('dashboard-nav');
+const user = await authFetch();
+document.addEventListener('DOMContentLoaded', () => {
+  
+  //checks if the user is logged in
+  if(user){
     document.getElementById('signin-nav').textContent = 'Sign Out';
+    //later incorporate a profile picture and icon instead of just "sign out"
+
+    if(user.role === 'e'){
+      adminNav.style.display = "none"; //none by default, but just in case
+    }
+    if(user.role === 'm' || user.role === 'a'){
+      adminNav.style.display = "none;"
+    }
+    if(user.role === 'a'){
+      adminNav.style.display = "block";
+    }
   }
   else{
     document.getElementById('signin-nav').textContent = 'Sign In';
   }
-})
+  
 
-//<=========EVENTS==========>
-document.addEventListener('DOMContentLoaded', () => {
-
-  //show messages
+  //show messages, if any are sent
   const successMsg = sessionStorage.getItem('successMsg');
   if(successMsg){
     showAlert('success',successMsg);
-    sessionStorage.setItem('successMsg','');
+    sessionStorage.setItem('successMsg',''); //resets the message
   }
 
   const infoMsg = sessionStorage.getItem('infoMsg');
@@ -47,13 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   if (currentPath.startsWith('/secure/')) {
-    const dash = document.getElementById('dashboard-nav');
-    if (dash) dash.classList.add('active');
+    //TODO: edit this so admin lights up when the user is on the admin page
+    if (dashboardNav){
+      dashboardNav.classList.add('active');
+    }
   }
-  
 });
 
-const dashboardNav = document.getElementById('dashboard-nav');
+//defined near the top of the file
 dashboardNav.addEventListener('click', async (e) => {
   e.preventDefault();
   if (await authFetch()) {
@@ -63,6 +76,20 @@ dashboardNav.addEventListener('click', async (e) => {
     window.location.href = '/public/signin.html';
   }
 });
+
+//adminNav defined near the top of this file
+adminNav.addEventListener('click', async (e) => {
+  e.preventDefault();
+  //TODO: check if user is admin and redirect the user to the proper page
+  const user = authFetch();
+  if(user.role === 'a'){
+    window.location.href = "/secure/admin/admin/html";
+  }
+  else{
+    sessionStorage.setItem('errorMsg',"You must be an admin to access this page");
+    window.location.reload();
+  }
+})
 
 const signInNav = document.getElementById('signin-nav');
 signInNav.addEventListener('click', async (e) => {
@@ -118,12 +145,11 @@ allFeaturedCourseCards.forEach(card => {
 
 //<==========EXTRA FUNCTIONS=========>
 async function authFetch() {
-    const response = await fetch('/api/session');
-    if (response.ok) {
-        return true; // User is authenticated
-    } else {
-        return false; // User is not authenticated
-    }
+  const response = await fetch('/api/session');
+  if (!response.ok){ 
+    return null; //user is not logged in
+  }
+  return await response.json(); // returns { userId, email, companyId, role, ... } (all the information sent by the endpoint)
 }
 
 async function signOut(){
@@ -138,8 +164,6 @@ async function signOut(){
         console.error('Logout failed');
     }
 }
-
-
 
 //just displays the alert
 function showAlert(type = 'info', message = '', duration = 4000) {
