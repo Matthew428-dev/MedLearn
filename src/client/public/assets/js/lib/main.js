@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   //checks if the user is logged in
   const user = await authFetch();
   if(user){
-    console.log(user);
     document.getElementById('signin-nav').textContent = 'Sign Out';
     //later incorporate a profile picture and icon instead of just "sign out"
 
@@ -230,4 +229,33 @@ function showAlert(type = 'info', message = '', duration = 4000) {
   box._hideTimer = setTimeout(() => box.classList.add('hidden'), duration);
 }
 
-window.showAlert = showAlert;  // make global
+//validates npi format (as an extra safeguard) and also makes sure that the npi actually exists
+async function validateNPI(rawNpi){
+  const npi = rawNpi.replace(/\D/g,'').trim(); //extra safeguard to replace all non-digits with ''
+
+  if(npi.length !== 10){ //another extra safeguard
+    window.showAlert('error',"NPI must be exactly 10 digits long");
+    return false; //later change this to return an error
+  }
+
+
+  //checks the npi database to see if the npi actually exists (see inquiriesRoute.js)
+  const result = await fetch("/api/npi-validation/" + npi);
+  const data = await result.json();
+
+  if (!result.ok) {                      // network / validation error
+    window.showAlert('error', data.msg || 'Error validating NPI');
+    return false;
+  }
+
+  if (!data.valid) {                  // registry says NPI not found
+    window.showAlert('error', "NPI doesn't exist");
+    return false;
+  }
+
+  return true;
+}
+
+//make these functions global so other pages can use them
+window.showAlert = showAlert; 
+window.validateNPI = validateNPI;

@@ -1,12 +1,11 @@
 <!--PSURF 2025 / MedLearn LMS / src / client / secure-->
-<!-- welcome.html -->
+<!-- onboarding.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome | MedLearn</title>
-  <!--<script src="https://cdn.tailwindcss.com"></script>-->
+  <title>Onboarding | MedLearn</title>
   <link rel="stylesheet" href="../public/assets/css/styles.css"/>
 </head>
 <body>
@@ -31,14 +30,61 @@
   <!-- Welcome card -->
   <main class="welcome-page">
     <form class="welcome-card" action="#" method="post">
-      <h1>Welcome!</h1>
+      <h1 id ='welcome-card-header'>Welcome!</h1>
 
+      <label for="firstName">First Name</label>
+      <input
+          type="text"
+          id="firstName"
+          name="firstName"
+          placeholder="John"
+          maxlength="100"
+          required
+      />
+
+      <label for="lastName">Last Name</label>
+      <input
+          type="text"
+          id="lastName"
+          name="lastName"
+          placeholder="Doe"
+          maxlength="100"
+          required
+      />
       <label for="company">Company Name</label>
       <input
         type="text"
         id="company"
         name="company"
         placeholder="Company name"
+        readonly
+        required
+      />
+
+      <label for="role">Role</label>
+      <input
+        type="text"
+        id="role"
+        name="role"
+        placeholder="Role"
+        readonly
+        required
+      />
+
+      <label for="profile-picture">Profile Picture</label>
+      <input
+        type="file"
+        id="profile-picture"
+        name="profile-picture"
+        accept="image/*"
+      />
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Email address"
         required
       />
 
@@ -77,6 +123,7 @@
     <!-- message text -->
     <span id="alert-msg">Placeholder</span>
   </div>
-  <script type="module" src="../public/assets/js/lib/main.js"></script>
+  <script type="module" src="./assets/js/lib/main.js"></script>
+  <script type="module" src="./assets/js/public/onboarding.js"></script>
 </body>
 </html>

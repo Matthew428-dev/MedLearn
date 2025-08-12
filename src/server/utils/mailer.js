@@ -72,7 +72,7 @@ The MedLearn Team`
           <li style="margin-bottom:8px;"><a href="${helpUrl}" style="color:#ffd75f;text-decoration:underline;">Click this one-time link to create your password and set up your profile</a> (the link will expire in 72 hours)</li>
           <li>After setting up your account, you will have 7-day access to all courses</li>
         </ol>
-        <p>If you need any assistance, reply to this email or reach out to us by phone at (409)-599-7103. We're available Monday-Friday 8:00am to 6:00am MT" style="color:#ffd75f;text-decoration:underline;">${helpUrl}</a></p>
+        <p>If you need any assistance, reply to this email or reach out to us by phone at (409)-599-7103. We're available Monday-Friday 8:00am to 6:00am MT</p>
         <p>Welcome aboard and thank you for choosing MedLearn.</p>
         <p>Best regards<br/>The MedLearn Team</p>
       </div>

@@ -14,6 +14,7 @@ const __dirname  = path.dirname(__filename);
 import usersRouter from './routes/usersRoute.js';
 import companiesRouter from './routes/companiesRoute.js';
 import inquiriesRouter from './routes/inquiriesRoute.js';
+import onboardingRouter from './routes/onboardingRoute.js'
 
 const app = express();
 const PORT = process.env.SERVER_PORT || 3000;
@@ -49,6 +50,7 @@ app.get('/api/session', (req, res) => {
 app.use(usersRouter);
 app.use(companiesRouter);
 app.use(inquiriesRouter);
+app.use(onboardingRouter);
 
 // auth guards
 function requireAuth(req, res, next) {

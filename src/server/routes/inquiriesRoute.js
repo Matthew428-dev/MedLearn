@@ -7,6 +7,7 @@ import { requireAdmin } from '../server.js';
 import { sendInquiryConfirmationEmail, sendInquiryApprovedEmail } from '../utils/mailer.js';
 import { randomBytes } from 'crypto';
 import bcrypt from 'bcrypt';
+import { hashToken, makeToken} from '../utils/hashToken.js';
 
 const router = Router()
 
@@ -19,11 +20,11 @@ router.post('/api/inquiries', checkSchema(createInquiryValidationSchema), async 
   const {email,firstName,lastName,companyName,npi,inquiryType,phoneNumber,numOfUsers,msg} = matchedData(req);
   try {
     const newInquiry = await createInquiry(email,firstName,lastName,companyName,npi,inquiryType,phoneNumber,numOfUsers,msg);
-    await sendInquiryConfirmationEmail(email, firstName)
+    await sendInquiryConfirmationEmail(email, firstName);
     return res.status(201).json(newInquiry);
   } catch (error) {
     console.error('Error creating inquiry:', error);
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(500).json({ errors: errors.array() });
   }
 });
 
@@ -93,8 +94,8 @@ router.patch("/api/inquiries/:inquiryID/updatestatus",checkSchema(updateInquiryV
   }
 
   //create the token(s)
-  const plainToken = randomBytes(32).toString('hex'); // send this in the link within the email
-  const tokenHash  = await bcrypt.hash(plainToken, 10); // store this in invites table in mysql
+  const plainToken = makeToken(); // send this in the link within the email
+  const tokenHash  = hashToken(plainToken); // store this in invites table in mysql
 
   //get the values from the req
   const { status: statusRaw, inquiryID } = matchedData(req);
@@ -102,9 +103,9 @@ router.patch("/api/inquiries/:inquiryID/updatestatus",checkSchema(updateInquiryV
 
   if(status === 1){ //inquiry is approved
     try{
-      //create invite
-      const newInvite = await createInvite(tokenHash);
-      
+      //create invite with manager role -> this is the admin sent invite
+      const newInvite = await createInvite(tokenHash, "m");
+
       //update the inquiries status and insert the inviteID from the new invite
       await updateInquiryStatus(inquiryID, status, newInvite.inviteID);
       
@@ -112,6 +113,7 @@ router.patch("/api/inquiries/:inquiryID/updatestatus",checkSchema(updateInquiryV
       const inquiry = await getInquiryByID(inquiryID);
 
       //create the url for the invite link in the email
+      //i think "|| 'http://localhost:3000'" needs to be removed for production
       const baseUrl    = process.env.FRONTEND_URL || 'http://localhost:3000';
       const inviteUrl  = `${baseUrl}/onboard?token=${plainToken}`;
 

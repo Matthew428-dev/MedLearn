@@ -218,3 +218,7 @@ export const updateInquiryValidationSchema = {
         errorMessage: 'Status must be either 1 (approved) or -1 (denied)'
     }
 }
+
+export const addAvatarValidationSchema = {
+    //TODO: Implement the validation schema for adding an avatar
+}

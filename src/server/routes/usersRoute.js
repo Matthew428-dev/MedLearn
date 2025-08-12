@@ -24,7 +24,7 @@ router.post('/secure/api/users',checkSchema(createUserValidationSchema), async (
   }
 )
 
-// get all users
+// get all users -> useful later for the users section on the admin page
 router.get('/secure/api/users', requireAdmin, async (req, res) => {
   try {
     const users = await getUsers();
@@ -36,7 +36,7 @@ router.get('/secure/api/users', requireAdmin, async (req, res) => {
 })
 
 // DELETE user by id
-router.delete('/secure/api/users/:id', requireAuth, async (req, res) => {
+router.delete('/secure/api/users/:id', requireAdmin, async (req, res) => {
   try {
     const result = await deleteUser(req.params.id)
     if (result.affectedRows === 0) {
@@ -83,4 +83,9 @@ router.post('/api/users/logout', requireAuth, async (req, res) => {
   });
 });
 
+//adds an avatar to the user, given the image url and user id
+router.post('api/users/:id/avatar', requireAuth, async (req,res) => {
+  //TODO: Implement this endpoint
+  
+});
 export default router

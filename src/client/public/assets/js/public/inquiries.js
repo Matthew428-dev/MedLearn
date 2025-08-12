@@ -86,7 +86,11 @@ if (npiInput) {
   npiInput.addEventListener('blur',e=>{
     //validateNPI does the whole npi check and shows the proper alert
     if(npiAttempted){
-      validateNPI(npiInput.value);
+      //this might be a little confusing, but validateNPI shows the proper alerts, but also returns true/false, see main.js
+      if(!window.validateNPI(npiInput.value)){
+        disableSubmitBtn();
+      }
+      
     }
   })
 
@@ -239,36 +243,6 @@ if (form) {
 }
 
 /*=======EXTRA HELPERS========*/
-
-//validates npi format (as an extra safeguard) and also makes sure that the npi actually exists
-async function validateNPI(rawNpi){
-  const npi = rawNpi.replace(/\D/g,'').trim(); //extra safeguard to replace all non-digits with ''
-
-  if(npi.length !== 10){ //another extra safeguard
-    disableSubmitBtn();
-    window.showAlert('error',"NPI must be exactly 10 digits long");
-    return false; //later change this to return an error
-  }
-
-
-  //checks the npi database to see if the npi actually exists (see inquiriesRoute.js)
-  const result = await fetch("/api/npi-validation/" + npi);
-  const data = await result.json();
-
-  if (!result.ok) {                      // network / validation error
-    disableSubmitBtn();
-    window.showAlert('error', data.msg || 'Error validating NPI');
-    return false;
-  }
-
-  if (!data.valid) {                  // registry says NPI not found
-    disableSubmitBtn();
-    window.showAlert('error', "NPI doesn't exist");
-    return false;
-  }
-
-  return true;
-}
 
 function disableSubmitBtn(){
   const submitBtn = document.querySelector(".btn-primary");

@@ -8,23 +8,6 @@ export const createInquiry = async (email, firstName, lastName, companyName, npi
     return result;
 }
 
-//OLD CODE -> UPDAED TO UPDATE INQUIRY STATUS
-/*export const approveInquiry = async (inquiryID, inviteID) => {
-    const [result] = await pool.query(
-        'UPDATE inquiries SET approved = 1, inviteID = ? WHERE inquiryID = ?',
-        [inviteID, inquiryID]
-    );
-    return result;
-}
-
-export const denyInquiry = async (inquiryID) => {
-    const [result] = await pool.query(
-        'UPDATE inquiries SET approved = -1 WHERE inquiryID = ?',
-        [inquiryID]
-    );
-    return result;
-}*/
-
 //updates the status of the inquiry and also inserts the inviteID, if applicable
 export const updateInquiryStatus = async (inquiryID, approved, inviteID = null) => {
     const [result] = await pool.query(
