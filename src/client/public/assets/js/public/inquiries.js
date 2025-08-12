@@ -1,18 +1,14 @@
 // PSURF 2025 / MedLearn LMS / src / client / public / js / inquiries.js
-/*import 'intl-tel-input/build/css/intlTelInput.css';*/
 import intlTelInput from 'intl-tel-input';
+import { setSubmitBusy, onSubmit, checkSubmit } from '../lib/form-ui.js';
+import {bindFirstNameHandlers,bindLastNameHandlers,bindCompanyNameHandlers,bindEmailHandlers} from '../lib/input-handlers.js';
 
 /* <========= EVENTS ==========> */
 let captchaOK = false; // default false, until the user passes the reCAPTCHA
 
-document.addEventListener('DOMContentLoaded',()=>{
-  checkSubmitBtn(); // initial check to enable/disable submit button
-});
-
-const form = document.querySelector(".inquiry-card");
-form.addEventListener('input', () => {
-  checkSubmitBtn();
-});
+const form = document.querySelector('.inquiry-card');
+const submitBtn = form.querySelector('.btn-primary');
+const refresh = checkSubmit(submitBtn, () => form.checkValidity() && captchaOK);
 
 // FIRST NAME FORMATTING
 let firstNameAttempted = false;
@@ -22,13 +18,17 @@ if(firstNameInput){
   firstNameInput.addEventListener("input", e => {
     e.target.value = e.target.value.replace(/\d/g, ''); //prevents the user from inputting digits
     firstNameAttempted = true;
+    firstNameInput.setCustomValidity('');
   });
 
   firstNameInput.addEventListener("blur", () => {
     if(firstNameInput.value.length > 100 && firstNameAttempted){
-      disableSubmitBtn();
+      firstNameInput.setCustomValidity('First name cannot be more than 100 characters');
       window.showAlert("error","First name cannot be more than 100 characters");
+    } else {
+      firstNameInput.setCustomValidity('');
     }
+    refresh();
   });
 }
 
@@ -40,13 +40,18 @@ if(lastNameInput){
   lastNameInput.addEventListener("input", e => {
     e.target.value = e.target.value.replace(/\d/g, ''); //prevents the user from inputting digits
     lastNameAttempted = true;
+    lastNameInput.setCustomValidity('');
   });
 
   lastNameInput.addEventListener("blur", () => {
     if(lastNameInput.value.length > 100 && lastNameAttempted){
-      disableSubmitBtn();
+      lastNameInput.setCustomValidity('Last name cannot be more than 100 characters');
       window.showAlert("error","Last name cannot be more than 100 characters");
     }
+    else {
+      lastNameInput.setCustomValidity('');
+    }
+    refresh();
   });
 }
 
@@ -57,13 +62,18 @@ const companyNameInput = document.getElementById("companyName");
 if(companyNameInput){
   companyNameInput.addEventListener("input", () => {
     companyNameAttempted = true;
+    companyNameInput.setCustomValidity('');
   });
 
   companyNameInput.addEventListener("blur", () => {
     if(companyNameInput.value.length > 100 && companyNameAttempted){
-      disableSubmitBtn();
+      companyNameInput.setCustomValidity('Company name cannot be more than 100 characters');
       window.showAlert("error","Company name cannot be more than 100 characters");
     }
+    else {
+      companyNameInput.setCustomValidity('');
+    }
+    refresh();
   });
 }
 
@@ -80,6 +90,7 @@ if (npiInput) {
     if(e.target.value.length > 3){
       npiAttempted = true;
     }
+    npiInput.setCustomValidity('');
   });
 
   //only validate npi on blur
@@ -88,9 +99,12 @@ if (npiInput) {
     if(npiAttempted){
       //this might be a little confusing, but validateNPI shows the proper alerts, but also returns true/false, see main.js
       if(!window.validateNPI(npiInput.value)){
-        disableSubmitBtn();
+          npiInput.setCustomValidity('Invalid NPI');
+      } 
+      else {
+        npiInput.setCustomValidity('');
       }
-      
+      refresh();
     }
   })
 
@@ -107,21 +121,26 @@ if(numOfUsersInput){
     if(e.target.value.length > 0){
       numOfUsersAttempted = true;
     }
+    numOfUsersInput.setCustomValidity('');
   });
 
   numOfUsersInput.addEventListener('blur',e=>{
     if(numOfUsersAttempted){
       const num = parseInt(e.target.value, 10);
       if(isNaN(num)){
+        numOfUsersInput.setCustomValidity('Number of users must be a valid number');
         window.showAlert('error','Number of users must be a valid number');
-        disableSubmitBtn();
       }
-      else if(num < 5){
-        window.showAlert("warn","Are you sure there is less than 5 users? Be sure to include managers.");
+      else{
+        numOfUsersInput.setCustomValidity('');
+        if(num < 5){
+          window.showAlert("warn","Are you sure there is less than 5 users? Be sure to include managers.");
+        }
+        else if(num > 150){
+          window.showAlert("warn","Are you sure there are more than 150 users?");
+        }
       }
-      else if(num > 150){
-        window.showAlert("warn","Are you sure there are more than 150 users?");
-      }
+      refresh();
     }
   });
 }
@@ -138,6 +157,7 @@ if(phoneInput){
     if(e.target.value.length > 2){
       phoneNumberAttempted = true;
     }
+    phoneInput.setCustomValidity('');
   });
 
   //phone number formatting and pattern validity
@@ -178,12 +198,14 @@ if(phoneInput){
           utils.numberFormat.NATIONAL
         );
         phoneInput.value = formatted;
+        phoneInput.setCustomValidity('');
       } else {
-        disableSubmitBtn();
+        phoneInput.setCustomValidity('Invalid ' + country.name + ' phone number');
         if(phoneNumberAttempted){
           window.showAlert("error","Invalid " + country.name + " phone number");
         }
       }
+      refresh();
     });
   })();
 }
@@ -191,21 +213,19 @@ if(phoneInput){
 // send submission data to the endpoint
 //form variable defined at the top of events
 if (form) {
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    disableSubmitBtn(); //just prevents double clicks
+  onSubmit(form, async fd => {
+    setSubmitBusy(submitBtn, true);
 
     // collect & normalize form values
-    const email = form.email.value.trim().toLowerCase();
-    const firstName = (form.firstName.value.charAt(0).toUpperCase() + form.firstName.value.slice(1).toLowerCase()).trim();
-    const lastName = (form.lastName.value.charAt(0).toUpperCase() + form.lastName.value.slice(1).toLowerCase()).trim();
-    const companyName = (form.companyName.value.charAt(0).toUpperCase() + form.companyName.value.slice(1).toLowerCase()).trim();
-    const npi = form.npi.value.trim();
-    const inquiryType = form.inquiryType.value;
-    const numOfUsers = parseInt(form.numOfUsers.value.trim(), 10);
-    const msg = form.msg.value.trim();
-    const rawPhone = phoneInput.value.replace(/\D/g, "");
-    const recaptcha = grecaptcha.getResponse();
+    const email = fd.get('email').trim().toLowerCase();
+    const firstName = (fd.get('firstName').charAt(0).toUpperCase() + fd.get('firstName').slice(1).toLowerCase()).trim();
+    const lastName = (fd.get('lastName').charAt(0).toUpperCase() + fd.get('lastName').slice(1).toLowerCase()).trim();
+    const companyName = (fd.get('companyName').charAt(0).toUpperCase() + fd.get('companyName').slice(1).toLowerCase()).trim();
+    const npi = fd.get('npi').trim();
+    const inquiryType = fd.get('inquiryType');
+    const numOfUsers = parseInt(fd.get('numOfUsers').trim(), 10);
+    const msg = fd.get('msg').trim();
+    const rawPhone = (fd.get('phoneNumber') || '').replace(/\D/g, "");
 
     // build payload
     const payload = {
@@ -231,11 +251,14 @@ if (form) {
       body: JSON.stringify(payload),
     });
 
+    setSubmitBusy(submitBtn, false);
+
     if (res.ok) {
-      form.reset();
-      showAlert("success", "Success! Inquiry received. Please allow 24-48 hours for a response.",8000);
+      grecaptcha.reset();
+      captchaOK = false;
+      refresh();
+      window.showAlert("success", "Success! Inquiry received. Please allow 24-48 hours for a response.",6000);
     } else {
-      disableSubmitBtn();
       const { errors } = await res.json();
       errors.forEach(err => window.showAlert('error', err.msg));
     }
@@ -244,49 +267,14 @@ if (form) {
 
 /*=======EXTRA HELPERS========*/
 
-function disableSubmitBtn(){
-  const submitBtn = document.querySelector(".btn-primary");
-  if(!submitBtn){
-    return;
-  }
-  submitBtn.disabled = true;
-  submitBtn.classList.add('opacity-50','cursor-not-allowed');
-  submitBtn.style.backgroundColor = '#4b5563';
-}
-
-function enableSubmitBtn() {
-  const submitBtn = document.querySelector(".btn-primary");
-  if(!submitBtn){
-    return;
-  }
-  submitBtn.disabled = false;
-  submitBtn.classList.remove('opacity-50','cursor-not-allowed');
-  submitBtn.style.backgroundColor = '';
-
-}
-
 function captchaVerified () {
   captchaOK = true;
-  checkSubmitBtn();
+  refresh();
 }
 function captchaExpired () {
   captchaOK = false;
-  checkSubmitBtn();
+  refresh();
 }
 
 /* ------- export them to the global object ------- */
 window.captchaVerified = captchaVerified;
-window.captchaExpired  = captchaExpired;
-
-function checkSubmitBtn(){
-  const {email,firstName,lastName,companyName,npi,numOfUsers,inquiryType} = form.elements;
-  const allFilled = email.value.trim() && firstName.value.trim() && lastName.value.trim() && companyName.value.trim() && npi.value.trim() && numOfUsers.value.trim() && inquiryType.value.trim();
-  
-  if(allFilled && captchaOK){
-    enableSubmitBtn();
-  }
-  else{
-    disableSubmitBtn();
-  }
-
-}

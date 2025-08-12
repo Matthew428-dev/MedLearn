@@ -580,3 +580,13 @@
 #admin-nav{
   display: none;
 }
+
+.btn-primary[disabled],
+.btn-primary[aria-busy="true"] {
+  background-color: #d1d5db; /* gray */
+  border-color: #d1d5db;
+  color: #6b7280;            /* darker gray text */
+  opacity: 1;                /* no extra fading */
+  cursor: not-allowed;
+  box-shadow: none;
+}
