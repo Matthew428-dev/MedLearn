@@ -11,71 +11,20 @@ const submitBtn = form.querySelector('.btn-primary');
 const refresh = checkSubmit(submitBtn, () => form.checkValidity() && captchaOK);
 
 // FIRST NAME FORMATTING
-let firstNameAttempted = false;
 const firstNameInput = document.getElementById("firstName");
-
-if(firstNameInput){
-  firstNameInput.addEventListener("input", e => {
-    e.target.value = e.target.value.replace(/\d/g, ''); //prevents the user from inputting digits
-    firstNameAttempted = true;
-    firstNameInput.setCustomValidity('');
-  });
-
-  firstNameInput.addEventListener("blur", () => {
-    if(firstNameInput.value.length > 100 && firstNameAttempted){
-      firstNameInput.setCustomValidity('First name cannot be more than 100 characters');
-      window.showAlert("error","First name cannot be more than 100 characters");
-    } else {
-      firstNameInput.setCustomValidity('');
-    }
-    refresh();
-  });
-}
+bindFirstNameHandlers(firstNameInput, refresh);
 
 // LAST NAME FORMATTING
-let lastNameAttempted = false;
 const lastNameInput = document.getElementById("lastName");
-
-if(lastNameInput){
-  lastNameInput.addEventListener("input", e => {
-    e.target.value = e.target.value.replace(/\d/g, ''); //prevents the user from inputting digits
-    lastNameAttempted = true;
-    lastNameInput.setCustomValidity('');
-  });
-
-  lastNameInput.addEventListener("blur", () => {
-    if(lastNameInput.value.length > 100 && lastNameAttempted){
-      lastNameInput.setCustomValidity('Last name cannot be more than 100 characters');
-      window.showAlert("error","Last name cannot be more than 100 characters");
-    }
-    else {
-      lastNameInput.setCustomValidity('');
-    }
-    refresh();
-  });
-}
+bindLastNameHandlers(lastNameInput, refresh);
 
 //COMPANY NAME FORMATTING
-let companyNameAttempted = false;
 const companyNameInput = document.getElementById("companyName");
+bindCompanyNameHandlers(companyNameInput, refresh);
 
-if(companyNameInput){
-  companyNameInput.addEventListener("input", () => {
-    companyNameAttempted = true;
-    companyNameInput.setCustomValidity('');
-  });
-
-  companyNameInput.addEventListener("blur", () => {
-    if(companyNameInput.value.length > 100 && companyNameAttempted){
-      companyNameInput.setCustomValidity('Company name cannot be more than 100 characters');
-      window.showAlert("error","Company name cannot be more than 100 characters");
-    }
-    else {
-      companyNameInput.setCustomValidity('');
-    }
-    refresh();
-  });
-}
+//EMAIL FORMATTING
+const emailInput = document.getElementById("email");
+bindEmailHandlers(emailInput, refresh);
 
 // NPI FORMATTING
 let npiAttempted = false;
@@ -214,7 +163,15 @@ if(phoneInput){
 //form variable defined at the top of events
 if (form) {
   onSubmit(form, async fd => {
+    //disables the submit btn
     setSubmitBusy(submitBtn, true);
+
+    const recaptcha = grecaptcha.getResponse();
+    if (!recaptcha) {
+      setSubmitBusy(submitBtn, false);
+      window.showAlert('error', 'Please complete the reCAPTCHA');
+      return;
+    }
 
     // collect & normalize form values
     const email = fd.get('email').trim().toLowerCase();
@@ -251,6 +208,7 @@ if (form) {
       body: JSON.stringify(payload),
     });
 
+    //enables submit btn
     setSubmitBusy(submitBtn, false);
 
     if (res.ok) {

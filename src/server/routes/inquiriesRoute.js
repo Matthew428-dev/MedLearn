@@ -104,7 +104,7 @@ router.patch("/api/inquiries/:inquiryID/updatestatus",checkSchema(updateInquiryV
   if(status === 1){ //inquiry is approved
     try{
       //create invite with manager role -> this is the admin sent invite
-      const newInvite = await createInvite(tokenHash, "m");
+      const newInvite = await createInvite(tokenHash, "Manager");
 
       //update the inquiries status and insert the inviteID from the new invite
       await updateInquiryStatus(inquiryID, status, newInvite.inviteID);
@@ -114,9 +114,9 @@ router.patch("/api/inquiries/:inquiryID/updatestatus",checkSchema(updateInquiryV
 
       //create the url for the invite link in the email
       //i think "|| 'http://localhost:3000'" needs to be removed for production
-      const baseUrl    = process.env.FRONTEND_URL || 'http://localhost:3000';
-      const inviteUrl  = `${baseUrl}/onboard?token=${plainToken}`;
-
+      const baseUrl   = process.env.FRONTEND_URL || 'http://localhost:3000';
+      const inviteUrl = `${baseUrl}/public/onboarding.html?token=${encodeURIComponent(plainToken)}`;
+      
       sendInquiryApprovedEmail(inquiry.email,inquiry.firstName,inquiry.lastName,inquiry.createdAt,inquiry.companyName,inviteUrl);
 
       return res.status(201).json({message: "Success, status updated to approved and invite created"});

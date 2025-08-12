@@ -1,3 +1,5 @@
+import { setSubmitBusy, onSubmit, checkSubmit } from '../lib/form-ui.js';
+import {bindFirstNameHandlers,bindLastNameHandlers,bindCompanyNameHandlers,bindEmailHandlers, bindPasswordHandler} from '../lib/input-handlers.js';
 //<========EVENTS========>
 
 //LOCKED INPUTS -> PULL INFO FROM DB
@@ -16,6 +18,12 @@ const confirmPasswordInput = document.getElementById("confirm-password");
 
 //the whole submission form
 const form = document.querySelector('.welcome-card');
+
+//the yellow submit btn at the bottom of the form
+const submitBtn = document.querySelector('.btn-primary');
+
+//checks if the submit button can now be enabled
+const refresh = checkSubmit(submitBtn, () => form.checkValidity());
 
 document.addEventListener('DOMContentLoaded', async e => {
     
@@ -55,8 +63,8 @@ document.addEventListener('DOMContentLoaded', async e => {
         window.showAlert("errorMsg","Network error. Try again. If this problem persists contact support");
     }
 
-    //----pull the correct values from the database to display in the text boxes---
-
+    //prefil the input boxes with the data from the db
+    //if statement safeguards to make sure everything exists
     //locked inputs
     if(data.companyName && companyNameInput){
         companyNameInput.value = data.companyName;
@@ -79,9 +87,14 @@ document.addEventListener('DOMContentLoaded', async e => {
 });
 
 //TODO: implement UI validation and show alerts
+//bind the corresponding event listeners
+bindCompanyNameHandlers(companyNameInput, refresh);
+bindEmailHandlers(emailInput, refresh);
+bindFirstNameHandlers(firstNameInput, refresh);
+bindLastNameHandlers(lastNameInput, refresh);
+bindPasswordHandler(createPasswordInput,confirmPasswordInput,refresh);
 
-
-const submitBtn = document.querySelector('.btn-primary');
+//submit btn defined near top of file
 submitBtn.addEventListener('click', async => {
     if(form){
         //TODO: send the data to the endpoint
@@ -96,12 +109,3 @@ submitBtn.addEventListener('click', async => {
 
 
 //<=======EXTRA FUNCTIONS========>
-function verifySubmitBtn(){
-    //TODO: implement this function, it verifies that all values are filled and 
-    //then calls toggleSubmitBtn() if appropriate. Similar to checkSubmitBtn in inquiries.js
-}
-
-function toggleSubmitBtn(){
-    //TOGO: implement this function, it toggles the submit btn, 
-    //if disabled -> it gets enabled, if enabled -> it gets disabled.
-}

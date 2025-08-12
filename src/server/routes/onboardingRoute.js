@@ -36,4 +36,9 @@ router.get('/api/public/onboarding.html', async (req,res) => {
     return res.status(200).json(info);
 });
 
+router.post('/api/onboarding', async (req,res)=>{
+    //TODO: Implement this endpoint, should create a new user, company and write to the db
+    //There are existing fucntions such as createUser and createCompany in the daos,
+    //but modifications are required for the profile picture
+})
 export default router;
