@@ -2,6 +2,8 @@
 import intlTelInput from 'intl-tel-input';
 import { setSubmitBusy, onSubmit, checkSubmit } from '../lib/form-ui.js';
 import {bindFirstNameHandlers,bindLastNameHandlers,bindCompanyNameHandlers,bindEmailHandlers} from '../lib/input-handlers.js';
+import { showAlert } from '../lib/alerts.js';
+
 
 /* <========= EVENTS ==========> */
 let captchaOK = false; // default false, until the user passes the reCAPTCHA
@@ -47,7 +49,7 @@ if (npiInput) {
     //validateNPI does the whole npi check and shows the proper alert
     if(npiAttempted){
       //this might be a little confusing, but validateNPI shows the proper alerts, but also returns true/false, see main.js
-      if(!window.validateNPI(npiInput.value)){
+      if(!validateNPI(npiInput.value)){
           npiInput.setCustomValidity('Invalid NPI');
       } 
       else {
@@ -78,15 +80,15 @@ if(numOfUsersInput){
       const num = parseInt(e.target.value, 10);
       if(isNaN(num)){
         numOfUsersInput.setCustomValidity('Number of users must be a valid number');
-        window.showAlert('error','Number of users must be a valid number');
+        showAlert('error','Number of users must be a valid number');
       }
       else{
         numOfUsersInput.setCustomValidity('');
         if(num < 5){
-          window.showAlert("warn","Are you sure there is less than 5 users? Be sure to include managers.");
+          showAlert("warn","Are you sure there is less than 5 users? Be sure to include managers.");
         }
         else if(num > 150){
-          window.showAlert("warn","Are you sure there are more than 150 users?");
+          showAlert("warn","Are you sure there are more than 150 users?");
         }
       }
       refresh();
@@ -151,7 +153,7 @@ if(phoneInput){
       } else {
         phoneInput.setCustomValidity('Invalid ' + country.name + ' phone number');
         if(phoneNumberAttempted){
-          window.showAlert("error","Invalid " + country.name + " phone number");
+          showAlert("error","Invalid " + country.name + " phone number");
         }
       }
       refresh();
@@ -169,7 +171,7 @@ if (form) {
     const recaptcha = grecaptcha.getResponse();
     if (!recaptcha) {
       setSubmitBusy(submitBtn, false);
-      window.showAlert('error', 'Please complete the reCAPTCHA');
+      showAlert('error', 'Please complete the reCAPTCHA');
       return;
     }
 
@@ -177,7 +179,8 @@ if (form) {
     const email = fd.get('email').trim().toLowerCase();
     const firstName = (fd.get('firstName').charAt(0).toUpperCase() + fd.get('firstName').slice(1).toLowerCase()).trim();
     const lastName = (fd.get('lastName').charAt(0).toUpperCase() + fd.get('lastName').slice(1).toLowerCase()).trim();
-    const companyName = (fd.get('companyName').charAt(0).toUpperCase() + fd.get('companyName').slice(1).toLowerCase()).trim();
+    const companyName = fd.get('companyName').trim().toLowerCase().replace(/(^|\s)\S/g, c => c.toUpperCase());
+    //const companyName = (fd.get('companyName').charAt(0).toUpperCase() + fd.get('companyName').slice(1).toLowerCase()).trim();
     const npi = fd.get('npi').trim();
     const inquiryType = fd.get('inquiryType');
     const numOfUsers = parseInt(fd.get('numOfUsers').trim(), 10);
@@ -215,10 +218,10 @@ if (form) {
       grecaptcha.reset();
       captchaOK = false;
       refresh();
-      window.showAlert("success", "Success! Inquiry received. Please allow 24-48 hours for a response.",6000);
+      showAlert("success", "Success! Inquiry received. Please allow 24-48 hours for a response.",6000);
     } else {
       const { errors } = await res.json();
-      errors.forEach(err => window.showAlert('error', err.msg));
+      errors.forEach(err => showAlert('error', err.msg));
     }
   });
 }
@@ -232,6 +235,33 @@ function captchaVerified () {
 function captchaExpired () {
   captchaOK = false;
   refresh();
+}
+
+//validates npi format (as an extra safeguard) and also makes sure that the npi actually exists
+async function validateNPI(rawNpi){
+  const npi = rawNpi.replace(/\D/g,'').trim(); //extra safeguard to replace all non-digits with ''
+
+  if(npi.length !== 10){ //another extra safeguard
+    window.showAlert('error',"NPI must be exactly 10 digits long");
+    return false; //later change this to return an error
+  }
+
+
+  //checks the npi database to see if the npi actually exists (see inquiriesRoute.js)
+  const result = await fetch("/api/npi-validation/" + npi);
+  const data = await result.json();
+
+  if (!result.ok) {                      // network / validation error
+    window.showAlert('error', data.msg || 'Error validating NPI');
+    return false;
+  }
+
+  if (!data.valid) {                  // registry says NPI not found
+    window.showAlert('error', "NPI doesn't exist");
+    return false;
+  }
+
+  return true;
 }
 
 /* ------- export them to the global object ------- */

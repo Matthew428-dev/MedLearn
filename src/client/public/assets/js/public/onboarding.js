@@ -1,4 +1,5 @@
 import { setSubmitBusy, onSubmit, checkSubmit } from '../lib/form-ui.js';
+import { showAlert } from '../lib/alerts.js';
 import {bindFirstNameHandlers,bindLastNameHandlers,bindCompanyNameHandlers,bindEmailHandlers, bindPasswordHandler} from '../lib/input-handlers.js';
 //<========EVENTS========>
 
@@ -6,6 +7,7 @@ import {bindFirstNameHandlers,bindLastNameHandlers,bindCompanyNameHandlers,bindE
 const companyNameInput = document.getElementById("company");
 const roleInput = document.getElementById("role");
 const emailInput = document.getElementById("email");
+const npiInput = document.getElementById("npi");
 
 //PRE-FILLED BUT NOT LOCKED -> PULL FROM DB THEN REVERIFY
 const firstNameInput = document.getElementById("firstName");
@@ -46,21 +48,18 @@ document.addEventListener('DOMContentLoaded', async e => {
     let data;
     try {
         const res = await fetch(`/api/public/onboarding.html?token=${encodeURIComponent(token)}`);
-        if (res.status === 410) { 
-            window.showAlert('errorMsg','This invite link has expired');
+        if (!res.ok) {
+            let msg = res.statusText;
+            try { const body = await res.json(); msg = body.message || msg; } catch {}
+            sessionStorage.setItem('errorMsg', msg);
             location.replace('/public/index.html');
             return;
-        }
-        if (!res.ok) { 
-            window.showAlert('errorMsg','Invalid invite link');
-            location.replace('/public/index.html');
-            return; 
         }
 
         data = await res.json();
         
     } catch {
-        window.showAlert("errorMsg","Network error. Try again. If this problem persists contact support");
+        showAlert("errorMsg","Network error. Try again. If this problem persists contact support");
     }
 
     //prefil the input boxes with the data from the db
@@ -75,6 +74,9 @@ document.addEventListener('DOMContentLoaded', async e => {
     if(data.email && emailInput){
         emailInput.value = data.email;
     }
+    if(data.npi && npiInput){
+        npiInput.value = data.npi;
+    }
 
     //unlocked inputs (but pre-filled)
     if(data.firstName && firstNameInput){
@@ -86,26 +88,63 @@ document.addEventListener('DOMContentLoaded', async e => {
 
 });
 
-//TODO: implement UI validation and show alerts
-//bind the corresponding event listeners
-bindCompanyNameHandlers(companyNameInput, refresh);
-bindEmailHandlers(emailInput, refresh);
+//bind the corresponding event listeners, no need to bind 
+//companyName and email because these input boxes are read-only
 bindFirstNameHandlers(firstNameInput, refresh);
 bindLastNameHandlers(lastNameInput, refresh);
 bindPasswordHandler(createPasswordInput,confirmPasswordInput,refresh);
+bindProfilePictureHandler(profilePictureInput, refresh);
 
 //submit btn defined near top of file
-submitBtn.addEventListener('click', async => {
-    if(form){
-        //TODO: send the data to the endpoint
-        //Note: This needs to create the user AND the company
+if(form){
+    onSubmit(form, async fd => {
 
+        //disable submitbtn temporarily
+        setSubmitBusy(submitBtn, true);
 
+        //get unlocked form values and normalize
+        const firstName = (fd.get('firstName').charAt(0).toUpperCase() + fd.get('firstName').slice(1).toLowerCase()).trim();
+        const lastName = (fd.get('lastName').charAt(0).toUpperCase() + fd.get('lastName').slice(1).toLowerCase()).trim();
+        const password = (fd.get('password'));
 
+        //build the payload to send to the endpoint
+        const payload = {
+            //locked values -> pull from the db 
+            email: data.email,
+            companyName: data.companyName,
+            npi: data.npi,
 
+            //hidden value
+            token: token,
 
-    }
-});
+            //unlocked values -> pull from user input
+            firstName: firstName,
+            lastName: lastName,
+            password: password
+        }
+
+        //actually send it to the endpoint
+        const res = await fetch("/api/onboarding", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+
+        //enable submit btn again
+        setSubmitBusy(submitBtn, false);
+
+        if(res.ok){
+            //redirect the user to the dashboard if the onboarding is successful
+            window.location.href = "/secure/dashboard.html";
+            sessionStorage.setItem("success","Success! You have been logged in");
+        }
+        else{
+            const { errors } = await res.json();
+            errors.forEach(err => showAlert('error', err.msg));
+        }
+    });
+}
+
 
 
 //<=======EXTRA FUNCTIONS========>

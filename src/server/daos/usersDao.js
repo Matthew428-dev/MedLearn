@@ -2,7 +2,7 @@ import { pool } from '../../../db/database.js';
 import bcrypt from 'bcrypt';
 
 
-export const createUser = async (companyID, email, password, firstName, lastName, role = 'e') => {
+export const createUser = async (companyID, email, password, firstName, lastName, role) => {
   const saltRounds = 10;
   const hash = await bcrypt.hash(password, saltRounds);
   const [result] = await pool.query(
@@ -20,11 +20,10 @@ export const getUsers = async () => {
   return rows;
 };
 
-//i dont think i need this function to be honest but left it here just in case
-export const getUserByEmail = async (email) => {
-  const [rows] = await pool.query('SELECT id, role, companyID FROM users WHERE email = ?', [email]);
+export const getUserByID = async (id) => {
+  const [rows] = await pool.query('SELECT firstLogin, companyID, firstName, lastName, role, email, profilePicture FROM users WHERE id = ?', [id]);
   if (rows.length === 0) {
-    return null; // No user found with the given email
+    return null; // No user found with the given id
   }
   return rows[0];
 };
@@ -48,3 +47,8 @@ export const checkLogin = async (email, password) => {
   // return ONLY the data needed for the session
   return { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email, companyID: user.companyID, role: user.role, firstLogin: user.firstLogin };
 };
+
+export const updateProfilePictureUrl = async(url, id) => {
+  const [rows] = await pool.query("UPDATE users SET profilePicture = ? WHERE id = ?",[url,id]);
+  return rows;
+}

@@ -1,4 +1,5 @@
 //this file adds the event listeners for various input boxes
+import { showAlert } from './alerts.js';
 export function bindFirstNameHandlers(input, refresh) {
   if (!input){ 
     return;
@@ -7,13 +8,20 @@ export function bindFirstNameHandlers(input, refresh) {
   input.addEventListener('input', e => {
     e.target.value = e.target.value.replace(/\d/g, '');
     attempted = true;
-    input.setCustomValidity('');
+
+    //have to check the length here so the form button doesn't get enabled
+    if(input.value.length > 100){
+      input.setCustomValidity("First name cannot be more than 100 characters");
+    }
+    else{
+      input.setCustomValidity('');
+    }
     refresh();
   });
   input.addEventListener('blur', () => {
     if (input.value.length > 100 && attempted) {
       input.setCustomValidity('First name cannot be more than 100 characters');
-      window.showAlert('error', 'First name cannot be more than 100 characters');
+      showAlert('error', 'First name cannot be more than 100 characters');
     }
     else {
       input.setCustomValidity('');
@@ -30,13 +38,20 @@ export function bindLastNameHandlers(input, refresh) {
   input.addEventListener('input', e => {
     e.target.value = e.target.value.replace(/\d/g, '');
     attempted = true;
-    input.setCustomValidity('');
+
+    if(input.value.length > 100){
+      input.setCustomValidity("Last name cannot be more than 100 characters");
+    }
+    else{
+      input.setCustomValidity("");
+    }
     refresh();
   });
+
   input.addEventListener('blur', () => {
     if (input.value.length > 100 && attempted) {
-      window.disableSubmitBtn?.();
-      window.showAlert('error', 'Last name cannot be more than 100 characters');
+      input.setCustomValidity("Last name cannot be more than 100 characters");
+      showAlert('error', 'Last name cannot be more than 100 characters');
     }else {
       input.setCustomValidity('');
     }
@@ -45,16 +60,24 @@ export function bindLastNameHandlers(input, refresh) {
 }
 
 export function bindCompanyNameHandlers(input, refresh) {
-  if (!input) return;
+  if (!input){ 
+    return;
+  }
   let attempted = false;
   input.addEventListener('input', () => {
     attempted = true;
+    if(input.value.length > 100){
+      input.setCustomValidity("Company name cannot be more than 100 characters");
+    }
+    else{
+      input.setCustomValidity('');
+    }
     refresh();
   });
   input.addEventListener('blur', () => {
     if (input.value.length > 100 && attempted) {
       input.setCustomValidity('Company name cannot be more than 100 characters');
-      window.showAlert('error', 'Company name cannot be more than 100 characters');
+      showAlert('error', 'Company name cannot be more than 100 characters');
     }
     else {
       input.setCustomValidity('');
@@ -70,13 +93,31 @@ export function bindEmailHandlers(input, refresh) {
   let attempted = false;
   input.addEventListener('input', e => {
     e.target.value = e.target.value.trim().toLowerCase();
+    if(e.target.value.length > 255){
+      input.setCustomValidity("Email cannot be more than 255 characters");
+    }
     attempted = true;
     refresh();
   });
-  input.addEventListener('blur', () => {
+  input.addEventListener('blur', async () => {
     if (input.value.length > 255 && attempted) {
       input.setCustomValidity('Email cannot be more than 255 characters');
-      window.showAlert('error', 'Email cannot be more than 255 characters');
+      showAlert('error', 'Email cannot be more than 255 characters');
+    }
+    else if (attempted && input.value) {
+      try {
+        const res = await fetch(`/api/mx-check/${encodeURIComponent(input.value)}`);
+        const data = await res.json();
+        console.log(data);
+        if (!data.valid) {
+          input.setCustomValidity("Email address doesn't exist");
+          showAlert('error', "Email address doesn't exist");
+        } else {
+          input.setCustomValidity('');
+        }
+      } catch {
+        input.setCustomValidity('');
+      }
     }
     else {
       input.setCustomValidity('');
@@ -105,6 +146,7 @@ export function bindPasswordHandler(createPasswordInput, confirmPasswordInput, r
     if(e.target.value.length > 128){
       createPasswordInput.setCustomValidity("Password cannot be more than 128 characters");
     }
+    refresh();
     
   });
 
@@ -124,6 +166,7 @@ export function bindPasswordHandler(createPasswordInput, confirmPasswordInput, r
     if(e.target.value.length > 128){
       confirmPasswordInput.setCustomValidity("Password cannot be more than 128 characters");
     }
+    refresh();
   })
 
   //now show the error if the user unfocuses (blurs) the input box
@@ -132,16 +175,16 @@ export function bindPasswordHandler(createPasswordInput, confirmPasswordInput, r
     if(attempted){
       if(e.target.value.length < 7){ //length cannot be less than 7
         createPasswordInput.setCustomValidity("Password cannot be less than 7 characters");
-        window.showAlert("error", "Password cannot be less than 7 characters");
+        showAlert("error", "Password cannot be less than 7 characters");
       }
       else if(e.target.value.length > 128){ //length cannot be more than 128
         createPasswordInput.setCustomValidity("Password cannot be more than 128 characters");
-        window.showAlert("error", "Password cannot be more than 128 characters");
+        showAlert("error", "Password cannot be more than 128 characters");
       }
       else if(e.target.value !== confirmPasswordInput.value){ //passwords have to match
         createPasswordInput.setCustomValidity("Passwords must match");
         confirmPasswordInput.setCustomValidity("Passwords must match");
-        window.showAlert("error","Passwords must match");
+        showAlert("error","Passwords must match");
       }
       else{
         createPasswordInput.setCustomValidity('');
@@ -157,16 +200,16 @@ export function bindPasswordHandler(createPasswordInput, confirmPasswordInput, r
     if(attempted){
       if(e.target.value.length < 7){
         confirmPasswordInput.setCustomValidity("Password cannot be less than 7 characters");
-        window.showAlert("error","Password cannot be less than 7 characters");
+        showAlert("error","Password cannot be less than 7 characters");
       }
       else if(e.target.value.length > 128){
         confirmPasswordInput.setCustomValidity("Password cannot be more than 128 characters");
-        window.showAlert("error", "Password cannot be more than 128 characters");
+        showAlert("error", "Password cannot be more than 128 characters");
       }
       else if(e.target.value !== createPasswordInput.value){
         createPasswordInput.setCustomValidity("Passwords must match");
         confirmPasswordInput.setCustomValidity("Passwords must match");
-        window.showAlert("error","Passwords must match");
+        showAlert("error","Passwords must match");
       }
       else{
         confirmPasswordInput.setCustomValidity('');
@@ -176,4 +219,17 @@ export function bindPasswordHandler(createPasswordInput, confirmPasswordInput, r
   })
 
 
+}
+
+export function bindProfilePictureHandler(profilePictureInput, refresh){
+  //TODO implement a profile picture preview and crop tool 
+  //also you might need to process image here? Not sure
+
+  //change is when the user finished picking a file
+  profilePictureInput.addEventListener("change", () => {
+    const picture = profilePictureInput.files[0];
+    if (!picture){
+      return;
+    }
+  });
 }

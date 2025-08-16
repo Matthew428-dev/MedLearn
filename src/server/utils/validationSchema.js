@@ -22,21 +22,31 @@ export const createUserValidationSchema = {
         errorMessage: 'Password must be at least 6 characters long'
     },
     firstName: {
-        in: ['body'],
-        isString: true,
-        isLength: {
-            options: { min: 2, max: 100 }
+        in: ['body'], 
+        isString: true, 
+        trim: true, 
+        isLength: { 
+            options: { min: 2, max: 100 }, bail: true 
         },
-        errorMessage: 'First name must be between 2 and 100 characters long'
+        matches: { 
+            options: [/\d/, 'g'], 
+            negated: true, 
+            errorMessage: 'First name can’t contain numbers' }
     },
     lastName: {
-        in: ['body'],
-        isString: true,
-        isLength: {
-            options: { min: 2, max: 100 }
+        in: ['body'], 
+        isString: true, 
+        trim: true, 
+        isLength: { 
+            options: { min: 2, max: 100 }, 
+            bail: true 
         },
-        errorMessage: 'Last name must be between 2 and 100 characters long'
-    },
+        matches: { 
+            options: [/\d/, 'g'], 
+            negated: true, 
+            errorMessage: 'Last name can’t contain numbers' 
+        }
+    }
 }
 
 export const createCompanyValidationSchema = {
@@ -48,6 +58,42 @@ export const createCompanyValidationSchema = {
         },
         errorMessage: 'Company name cannot be more than 100 characters long'
     },
+    npi: {
+        in: ['body'],
+        isLength: { 
+            options: { min: 10, max: 10 },
+            bail: true
+        },
+        matches: { 
+            options: [/^[0-9]+$/],
+            bail: true 
+        }, 
+        //valid npi check
+        custom: {
+            options: async npi => {
+                //set a timeout in case the npi validation fetch takes too long
+                const ctrl = new AbortController();
+                const t = setTimeout(() => ctrl.abort(), 4000);
+                // call the public NPI Registry API
+                const res = await fetch(
+                    `https://npiregistry.cms.hhs.gov/api/?version=2.1&number=${npi}`
+                );
+                clearTimeout(t);
+                if (!res.ok){ 
+                    throw new Error('NPI lookup failed');
+                }
+
+                const data = await res.json();
+                const exists = Array.isArray(data.results) && data.results.length > 0;
+                if (!exists){ 
+                    throw new Error('NPI does not exist');
+                }
+
+                return true;
+            }
+        },
+        errorMessage: 'Invalid NPI'
+    }
 }
 
 export const createInquiryValidationSchema = {

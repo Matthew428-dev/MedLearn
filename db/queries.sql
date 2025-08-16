@@ -1,8 +1,9 @@
 use medlearnLMS;
-alter table invites drop column role;
-alter table invites add column role varchar(16) not null;
-describe invites;
+select * from users;
 
+/*delete from users where id = 8;
+delete from companies where companyID = 25;
+select * from users;*/
 
 
 /*

@@ -1,4 +1,5 @@
 //PSURF 2025 / MedLearn LMS / src / client / public / js
+import { showAlert } from '../lib/alerts.js';
 /* ========= EVENTS========= */
 const form = document.getElementById('login-form');   // <form id="login-form"> … :contentReference[oaicite:4]{index=4}
 const badLoginAlert  = document.getElementById('alert');  // <div id="login-alert" …>
@@ -16,7 +17,7 @@ form.addEventListener('submit', async e => {
     sessionStorage.setItem('successMsg','Success! You have been logged in.')
     window.location.href = '/secure/dashboard.html';
   } else {
-    window.showAlert('error','Invalid email or password');
+    showAlert('error','Invalid email or password');
   }
 
 });

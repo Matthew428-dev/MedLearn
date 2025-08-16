@@ -1,9 +1,9 @@
 import { pool } from '../../../db/database.js';
 
-export const createCompany = async (companyName) => {
+export const createCompany = async (companyName, npi) => {
   const [result] = await pool.query(
-    'INSERT INTO companies (companyName) VALUES (?)',
-    [companyName]
+    'INSERT INTO companies (companyName,npi) VALUES (?,?)',
+    [companyName,npi]
   );
   return result;              // contains insertId, affectedRows, …
 };

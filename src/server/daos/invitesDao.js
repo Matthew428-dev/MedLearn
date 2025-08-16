@@ -11,10 +11,9 @@ export const createInvite = async (tokenHash, role) => {
   return { inviteID: result.insertId};
 }
 
-//i dont remember adding this but i think its unnecessary, check it out eventually
-export const getInviteByTokenHash = async (tokenHash) => {
+export const getUnusedInviteByTokenHash = async (tokenHash) => {
     const [rows] = await pool.query(
-        'SELECT * FROM invites WHERE tokenHash = ? LIMIT 1',
+        'SELECT * FROM invites WHERE tokenHash = ? AND usedAt IS NULL AND expirationTime > NOW() LIMIT 1',
         [tokenHash]
     );
     if (rows.length === 0) {
@@ -33,7 +32,7 @@ export const deleteInvite = async (tokenHash) => {
 
 export const markInviteUsed = async (tokenHash) => {
     const [result] = await pool.query(
-        'UPDATE invites SET used = 1 WHERE tokenHash = ?',
+        'UPDATE invites SET usedAt = NOW() WHERE tokenHash = ?',
         [tokenHash]
     );
     return result;
@@ -43,7 +42,7 @@ export const markInviteUsed = async (tokenHash) => {
 //the data the user enters when they submit their inquiry
 export const getOnboardingInfoFromTokenHash = async (tokenHash) => {
     const [result] = await pool.query(
-        'SELECT companyName, email, role, firstName, lastName FROM invites NATURAL JOIN inquiries WHERE tokenHash = ? AND tokenUsed = 0 AND expirationTime > NOW()',
+        'SELECT companyName, email, role, firstName, lastName, npi FROM invites NATURAL JOIN inquiries WHERE tokenHash = ? AND tokenUsed = 0 AND expirationTime > NOW()',
         [tokenHash]
     );
     return result[0] || null;
