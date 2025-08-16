@@ -12,14 +12,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('signin-nav').textContent = 'Sign Out';
     //later incorporate a profile picture and icon instead of just "sign out"
 
-    if(user.role === 'Employee'){
-      adminNav.style.display = "none"; //none by default, but just in case
-    }
-    if(user.role === 'Manager' || user.role === 'a'){
-      adminNav.style.display = "none;"
-    }
-    if(user.role === 'Admin'){
-      adminNav.style.display = "block";
+    if (user.role === 'Admin') {
+      adminNav.style.display = 'block';
+    } else {
+      adminNav.style.display = 'none';
     }
   }
   else{

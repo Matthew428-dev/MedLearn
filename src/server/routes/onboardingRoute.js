@@ -29,8 +29,9 @@ router.get('/api/public/onboarding.html', async (req,res) => {
         }
         
     }
-    catch(errors){
-        return res.status(500).json({ errors: errors.array() });
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Server error' });
     }
     
     //info contains role, npi, companyName, and email, we have to return info so
@@ -64,7 +65,7 @@ router.post('/api/onboarding',checkSchema(createUserValidationSchema), checkSche
 
             //this if statement might not be necessary
             if(company.affectedRows === 0){
-                return res.status(500).json({message: "Sever error"});
+                return res.status(500).json({message: "Server error"});
             }
 
             //use the id from the company that was created to create the user

@@ -1,12 +1,6 @@
 import {validateDomain} from "./mxChecker.js";
 
 export const createUserValidationSchema = {
-    companyID: {
-        in: ['body'],
-        isInt: true,
-        toInt: true,
-        errorMessage: 'Invalid company ID'
-    },
     email: {
         in: ['body'],
         isEmail: true,

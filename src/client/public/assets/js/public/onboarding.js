@@ -1,6 +1,6 @@
 import { setSubmitBusy, onSubmit, checkSubmit } from '../lib/form-ui.js';
 import { showAlert } from '../lib/alerts.js';
-import {bindFirstNameHandlers,bindLastNameHandlers,bindCompanyNameHandlers,bindEmailHandlers, bindPasswordHandler} from '../lib/input-handlers.js';
+import {bindFirstNameHandlers,bindLastNameHandlers, bindPasswordHandler, bindProfilePictureHandler} from '../lib/input-handlers.js';
 //<========EVENTS========>
 
 //LOCKED INPUTS -> PULL INFO FROM DB
@@ -27,9 +27,14 @@ const submitBtn = document.querySelector('.btn-primary');
 //checks if the submit button can now be enabled
 const refresh = checkSubmit(submitBtn, () => form.checkValidity());
 
+//defined at the top of the file so that both the domcontentloaded listener can use it
+//as well as the form submit function call
+let token = null;
+let data = null;
+
 document.addEventListener('DOMContentLoaded', async e => {
     
-    const token = new URLSearchParams(location.search).get('token');
+    token = new URLSearchParams(location.search).get('token');
     if (!token) {
         //if the token doesn't exist, send the user back to the home page
         sessionStorage.setItem("errorMsg","This page is for first-time users only");
@@ -45,7 +50,6 @@ document.addEventListener('DOMContentLoaded', async e => {
     //use history.replaceState instead of location.replace so that the page doesn't reload
     history.replaceState({}, '', clean);
 
-    let data;
     try {
         const res = await fetch(`/api/public/onboarding.html?token=${encodeURIComponent(token)}`);
         if (!res.ok) {
@@ -56,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async e => {
             return;
         }
 
+        //turn the result into json so it can be used by the rest of the program
         data = await res.json();
         
     } catch {
@@ -99,6 +104,11 @@ bindProfilePictureHandler(profilePictureInput, refresh);
 if(form){
     onSubmit(form, async fd => {
 
+        if (!data || !token) {
+            showAlert('errorMsg', 'Still loading invite info. Please try again.');
+            return;
+        }
+        
         //disable submitbtn temporarily
         setSubmitBusy(submitBtn, true);
 

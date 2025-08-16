@@ -42,7 +42,7 @@ export const markInviteUsed = async (tokenHash) => {
 //the data the user enters when they submit their inquiry
 export const getOnboardingInfoFromTokenHash = async (tokenHash) => {
     const [result] = await pool.query(
-        'SELECT companyName, email, role, firstName, lastName, npi FROM invites NATURAL JOIN inquiries WHERE tokenHash = ? AND tokenUsed = 0 AND expirationTime > NOW()',
+        'SELECT companyName, email, role, firstName, lastName, npi FROM invites NATURAL JOIN inquiries WHERE tokenHash = ? AND usedAt IS NULL AND expirationTime > NOW()',
         [tokenHash]
     );
     return result[0] || null;

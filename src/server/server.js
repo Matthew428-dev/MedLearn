@@ -54,13 +54,13 @@ function requireAuth(req, res, next) {
 function requireManager(req, res, next) {
   requireAuth(req, res, () => {
     const role = req.session.user.role;
-    if (role !== 'manager' && role !== 'admin') return res.sendStatus(403);
+    if (role !== 'Manager' && role !== 'Admin') return res.sendStatus(403);
     next();
   });
 }
 function requireAdmin(req, res, next) {
   requireAuth(req, res, () => {
-    if (req.session.user.role !== 'admin') return res.sendStatus(403);
+    if (req.session.user.role !== 'Admin') return res.sendStatus(403);
     next();
   });
 }
@@ -85,9 +85,10 @@ app.use(onboardingRouter);
 app.use(mxRouter);
 
 // serve front-end
-app.use('/secure/admin',   requireAdmin,   express.static(path.join(__dirname, '../client/secure/admin')));
-app.use('/secure/manager', requireManager, express.static(path.join(__dirname, '../client/secure/manager')));
-app.use('/secure',         requireAuth,    express.static(path.join(process.cwd(), 'dist', 'secure')));
+app.use('/secure/admin', requireAdmin, express.static(path.join(process.cwd(), 'dist', 'secure', 'admin')));
+app.use('/secure', requireAuth, express.static(path.join(process.cwd(), 'dist', 'secure')));
+//no manager files to serve right now, but might be soem in the future
+//app.use('/secure/manager',requireManager,express.static(path.join(process.cwd(), 'dist', 'secure', 'manager')));
 app.use(express.static(path.join(process.cwd(), 'dist')));
 
 // start server

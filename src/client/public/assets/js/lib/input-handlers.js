@@ -143,8 +143,11 @@ export function bindPasswordHandler(createPasswordInput, confirmPasswordInput, r
     if(e.target.value.length < 7){
       createPasswordInput.setCustomValidity("Password cannot be less than 7 characters");
     }
-    if(e.target.value.length > 128){
+    else if(e.target.value.length > 128){
       createPasswordInput.setCustomValidity("Password cannot be more than 128 characters");
+    }
+    else{
+      createPasswordInput.setCustomValidity('');
     }
     refresh();
     
@@ -163,8 +166,11 @@ export function bindPasswordHandler(createPasswordInput, confirmPasswordInput, r
     if(e.target.value.length < 7){
       confirmPasswordInput.setCustomValidity("Password cannot be less than 7 characters");
     }
-    if(e.target.value.length > 128){
+    else if(e.target.value.length > 128){
       confirmPasswordInput.setCustomValidity("Password cannot be more than 128 characters");
+    }
+    else{
+      confirmPasswordInput.setCustomValidity('');
     }
     refresh();
   })
