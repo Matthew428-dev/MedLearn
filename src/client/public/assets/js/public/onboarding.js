@@ -108,7 +108,7 @@ if(form){
             showAlert('errorMsg', 'Still loading invite info. Please try again.');
             return;
         }
-        
+
         //disable submitbtn temporarily
         setSubmitBusy(submitBtn, true);
 
@@ -143,15 +143,49 @@ if(form){
         //enable submit btn again
         setSubmitBusy(submitBtn, false);
 
-        if(res.ok){
-            //redirect the user to the dashboard if the onboarding is successful
-            window.location.href = "/secure/dashboard.html";
-            sessionStorage.setItem("success","Success! You have been logged in");
+        if (res.ok) {
+            // get the selected file
+            const file = profilePictureInput?.files?.[0];
+
+            if (file) {
+                const fd = new FormData();
+                // field name MUST match multer: upload.single('profile-picture')
+                fd.append('profile-picture', file);
+
+                const up = await fetch('/api/users/me/profile-picture', {
+                    method: 'POST',
+                    body: fd // do NOT set Content-Type; browser sets it with boundary
+                });
+
+                if (!up.ok) {
+                    const msg = (await up.json().catch(()=>null))?.message || 'Avatar upload failed';
+                    showAlert('error', msg);
+                    return; // optionally stop redirect on failure
+                }
+            }
+
+            sessionStorage.setItem('success', 'Success! You have been logged in');
+            window.location.href = '/secure/dashboard.html';
         }
-        else{
-            const { errors } = await res.json();
-            errors.forEach(err => showAlert('error', err.msg));
+        else {
+        // Request failed: show a friendly message without crashing
+        let response;
+        try { 
+            response = await res.json(); 
+        } 
+        catch (e) {} //i believe all errors are processed properly in the if else statement below
+
+            if (response && Array.isArray(response.errors)) {
+                response.errors.forEach(e => showAlert('error', e?.msg || 'Invalid input'));
+            } else if (response && response.message) {
+                showAlert('error', response.message);
+                return;
+            } else {
+                showAlert('error', `Request failed (${res.status}). Please try again.`);
+                return;
+            }
         }
+
     });
 }
 

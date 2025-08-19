@@ -1,7 +1,8 @@
 // routes/users.js
 import { Router } from 'express'
 import { checkSchema, validationResult, matchedData } from 'express-validator';
-import { createUser, getUsers, deleteUser, checkLogin} from '../daos/usersDao.js';
+import { createUser, getUsers, deleteUser, checkLogin, updateProfilePictureUrl } from '../daos/usersDao.js';
+
 import { createUserValidationSchema } from '../utils/validationSchema.js';
 import { requireAuth, requireManager, requireAdmin } from '../server.js';
 import multer from 'multer';
@@ -110,7 +111,9 @@ router.post('/api/users/logout', requireAuth, async (req, res) => {
 // POST /api/users/me/profile-picture — updates current user's profile picture
 router.post('/api/users/me/profile-picture', requireAuth, upload.single('profile-picture'), async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+    if (!req.file){ 
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
     if (!/image\/(png|jpe?g|webp)$/i.test(req.file.mimetype)) {
       return res.status(400).json({ message: 'Only PNG/JPG/WEBP images allowed' });
     }
@@ -130,7 +133,10 @@ router.post('/api/users/me/profile-picture', requireAuth, upload.single('profile
       .toFile(outPath);
 
     const url = `/uploads/profile-pictures/${userId}/profile-picture.webp?v=${Date.now()}`;
+    
     await updateProfilePictureUrl(url,req.session.user.userId);
+
+    return res.json({ message: 'Upload successful!', url });
   } catch (err) {
     res.status(500).json({ message: 'Upload failed' });
   }

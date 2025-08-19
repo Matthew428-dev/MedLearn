@@ -92,13 +92,24 @@
       />
       
       <label for="profile-picture">Profile Picture</label>
-      <input
-        type="file"
-        id="profile-picture"
-        name="profile-picture"
-        accept="image/*"
-        enctype="multipart/form-data"
-      />
+      <div class="profile-picture-wrapper">
+        <input
+          type="file"
+          id="profile-picture"
+          name="profile-picture"
+          accept="image/*"
+          enctype="multipart/form-data"
+        />
+        <button
+          type="button"
+          id="remove-profile-picture"
+          class="remove-profile-picture-btn"
+          aria-label="Remove profile picture"
+          hidden
+        >
+          &times;
+        </button>
+      </div>
 
       
 

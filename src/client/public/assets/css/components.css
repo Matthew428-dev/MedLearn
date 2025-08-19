@@ -590,3 +590,25 @@
   cursor: not-allowed;
   box-shadow: none;
 }
+
+.profile-picture-wrapper{
+  position: relative;
+  width: 100%;
+}
+
+.remove-profile-picture-btn{
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  border-radius: 9999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+}

@@ -40,9 +40,10 @@ export const markInviteUsed = async (tokenHash) => {
 
 //gets some values to be displayed on the onboarding page, the values come from
 //the data the user enters when they submit their inquiry
+//i guess using natural join is bad because columns can be changed in the db
 export const getOnboardingInfoFromTokenHash = async (tokenHash) => {
     const [result] = await pool.query(
-        'SELECT companyName, email, role, firstName, lastName, npi FROM invites NATURAL JOIN inquiries WHERE tokenHash = ? AND usedAt IS NULL AND expirationTime > NOW()',
+        'SELECT q.companyName, q.email, i.role, q.firstName, q.lastName, q.npi FROM invites i JOIN inquiries q ON q.inviteID = i.inviteID WHERE i.tokenHash = ? AND i.usedAt IS NULL AND i.expirationTime > NOW() LIMIT 1;',
         [tokenHash]
     );
     return result[0] || null;

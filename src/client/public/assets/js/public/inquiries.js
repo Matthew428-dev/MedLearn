@@ -32,6 +32,7 @@ bindEmailHandlers(emailInput, refresh);
 let npiAttempted = false;
 const npiInput = document.getElementById('npi');
 
+
 if (npiInput) {
 
   //only allow digits, no longer than 10 digits, as the user types

@@ -3,7 +3,8 @@ import { checkSchema, validationResult, matchedData } from 'express-validator';
 import { addAvatarValidationSchema, createUserValidationSchema, createCompanyValidationSchema} from '../utils/validationSchema.js';
 import { hashToken} from '../utils/hashToken.js';
 import {createCompany} from '../daos/companiesDao.js'
-import { createUser,getUserByID } from '../daos/usersDao.js';
+import { createUser,getUserByID} from '../daos/usersDao.js';
+
 import {getOnboardingInfoFromTokenHash,markInviteUsed,getUnusedInviteByTokenHash} from '../daos/invitesDao.js'
 
 const router = Router();
@@ -24,7 +25,7 @@ router.get('/api/public/onboarding.html', async (req,res) => {
         info = await getOnboardingInfoFromTokenHash(tokenHash);
         
         //if no invite exists
-        if(info.length === 0){
+        if(!info){
             return res.status(404).json({message: "Invalid invite link"});
         }
         
@@ -84,7 +85,9 @@ router.post('/api/onboarding',checkSchema(createUserValidationSchema), checkSche
             }
             
             //to prevent fixation (some sort of malicious attack)
-            req.session = null;
+            await new Promise((resolve, reject) => {
+                req.session.regenerate(err => err ? reject(err) : resolve());
+            });
 
             //automatically login the user after the complete onboarding
             req.session.user = {
@@ -96,6 +99,10 @@ router.post('/api/onboarding',checkSchema(createUserValidationSchema), checkSche
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName
             };
+
+            await new Promise((resolve, reject) => {
+                req.session.save(err => err ? reject(err) : resolve());
+            });
 
             return res.status(201).json({message: "Onboarding Successful!"});
         }

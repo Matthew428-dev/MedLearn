@@ -231,11 +231,40 @@ export function bindProfilePictureHandler(profilePictureInput, refresh){
   //TODO implement a profile picture preview and crop tool 
   //also you might need to process image here? Not sure
 
-  //change is when the user finished picking a file
-  profilePictureInput.addEventListener("change", () => {
-    const picture = profilePictureInput.files[0];
-    if (!picture){
+  const allowed = new Set(['image/jpeg','image/png','image/webp']);
+  const maxBytes = 2 * 1024 * 1024; // 2 MB
+
+  profilePictureInput?.addEventListener('change', () => {
+    
+    const file = profilePictureInput.files?.[0];
+
+    if (!file) {
+      //don't show any errors if no file was uploaded, as the pic is optional
+      profilePictureInput.setCustomValidity(''); 
+      refresh();
       return;
     }
+
+    // type check
+    if (!allowed.has(file.type)) {
+      //no custom validity added because user doesn't have to upload a file
+      profilePictureInput.value = ''; // clears the file
+      showAlert('error','Only JPG/PNG/WebP file types are supported');
+      refresh();
+      return;
+    }
+
+    // size check
+    if (file.size > maxBytes) {
+      //no custom validity added because user doesn't have to upload a file
+      profilePictureInput.value = ''; //clears the file
+      showAlert('error','Max file size is 2 MB');
+      refresh();
+      return;
+    }
+
+    // valid
+    profilePictureInput.setCustomValidity('');
+    refresh();
   });
 }
