@@ -63,6 +63,7 @@ approveBtn.addEventListener('click', async function() {
     }
 
     //update inquiry status to approved
+    //TODO: add a success/error msg based on the fetch called below
     await fetchUpdateInquiryStatus(currentInquiryID, 1);
 
     //get the row that has the same inquiry ID
